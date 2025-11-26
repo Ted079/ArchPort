@@ -1,0 +1,52 @@
+// {
+//   "compilerOptions": {
+//     "module": "ESNext",
+//     "target": "ES2020",
+//     "moduleResolution": "node",
+//     "verbatimModuleSyntax": false,
+
+//     "types": ["node"],
+//     "lib": ["esnext"],
+
+//     "sourceMap": true,
+//     "declaration": true,
+//     "declarationMap": true,
+
+//     "noUncheckedIndexedAccess": true,
+//     "exactOptionalPropertyTypes": true,
+
+//     "strict": true,
+//     "jsx": "react-jsx",
+//     "isolatedModules": true,
+//     "noUncheckedSideEffectImports": true,
+//     "moduleDetection": "force",
+//     "skipLibCheck": true
+//   }
+// }
+
+// // {
+// //   "compilerOptions": {
+// //     "target": "ES6",
+// //     "module": "commonjs",
+// //     "rootDir": "./src",
+// //     "outDir": "./dist",
+// //     "strict": true,
+// //     "esModuleInterop": true,
+// //     "typeRoots": ["./src/types", "./node_modules/@types"]
+// //   }
+
+// // }
+
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    // "rootDir": "../",
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "typeRoots": ["./src/types", "./node_modules/@types"]
+  },
+  "include": ["src/**/*", "../shared/**/*"]
+  // "exclude": ["node_modules"]
+}
