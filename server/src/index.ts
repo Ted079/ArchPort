@@ -13,6 +13,7 @@ app.use(express.json());
 
 connectDb();
 
+
 const PORT = process.env.PORT || 5000;
 
 app.get("/", (req, res) => {

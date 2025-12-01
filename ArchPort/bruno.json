@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "ArchPort",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
