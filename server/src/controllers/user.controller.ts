@@ -24,7 +24,7 @@ export const register = async (req: Request, res: Response) => {
 
     const user = await User.create({ email, name, password: hashedPass });
 
-    const token = jwt.sign({ user: user._id }, process.env.JWT_SECRET!, {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
       expiresIn: "7d",
     });
 
@@ -49,11 +49,9 @@ export const login = async (req: Request, res: Response) => {
   try {
     const { email, password }: LoginDTO = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
     if (!user) {
-      return res
-        .status(400)
-        .json({ message: "Registration failed. Please check your data" });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     const comparePass = await bcrypt.compare(password, user.password);
@@ -77,10 +75,23 @@ export const login = async (req: Request, res: Response) => {
       },
     };
 
-    res.status(201).json(response);
+    res.status(200).json(response);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
-export const getMe = async (req: Request, res: Response) => {};
+export const getMe = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById(req.userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
