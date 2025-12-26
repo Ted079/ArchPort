@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../utils/route";
 import type { RegisterDTO } from "../../../../shared/types/user.types";
 import { useAppDispatch } from "../../store";
-import { createUser } from "../../store/user/userSlice";
+import { createUser } from "../../store/user/authSlice";
 
 const Signup = () => {
   const navigate = useNavigate();

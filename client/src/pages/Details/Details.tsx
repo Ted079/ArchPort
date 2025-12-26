@@ -1,9 +1,15 @@
-import React from 'react'
+import React from "react";
+import { logOut } from "../../store/user/authSlice";
+import { useAppDispatch } from "../../store";
 
 const Details = () => {
-  return (
-    <div>Details</div>
-  )
-}
+  const dispatch = useAppDispatch();
 
-export default Details
+  return (
+    <div>
+      <button className="w-md bg-blue-500" onClick={() => dispatch(logOut())}>Log Out</button>
+    </div>
+  );
+};
+
+export default Details;

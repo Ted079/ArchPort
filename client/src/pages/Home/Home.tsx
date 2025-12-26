@@ -1,11 +1,14 @@
-import React from 'react'
+import { useSelector } from "react-redux";
+import { useAppSelector } from "../../store";
 
 const Home = () => {
+  const user = useAppSelector((state) => state.auth.user);
   return (
-    <div >Homeeeeeeeeee!
-
+    <div>
+      Homeeeeeeeeee!
+      {user?.name}
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
