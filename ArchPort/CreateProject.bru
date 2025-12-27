@@ -1,0 +1,31 @@
+meta {
+  name: CreateProject
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:5000/api/projects
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTA1NTljMTMwY2VhZGUzN2UzNTA1ZiIsImlhdCI6MTc2Njg3MjQ3NiwiZXhwIjoxNzY3NDc3Mjc2fQ.jsvCVzZHAuMDqjHTqplqZXqNYm0quqA9iYalHca6_e4
+}
+
+body:json {
+  {
+    "title": "Troy",
+    "description": "From test2 user",
+    "category": "architecture",
+    "images": ["https://example.com/image1.jpg"]
+    
+    
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

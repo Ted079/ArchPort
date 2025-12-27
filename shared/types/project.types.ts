@@ -15,6 +15,8 @@ export interface IProject {
   category?: ProjectCategory;
   author: string | IUser;
   views: number;
+  // likes: string[],
+
   createdAt: Date;
   updatedAt: Date;
 }

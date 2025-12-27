@@ -5,6 +5,8 @@ export interface IUser {
   avatar?: string;
   bio?: string;
   createdAt: Date;
+  // favorites: string[],
+
 }
 
 export interface RegisterDTO {

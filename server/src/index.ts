@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDb from "./config/db";
 import authRoutes from "./routes/user.route";
+import projerctRoutes from "./routes/project.route";
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/projects", projerctRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server started on PORT = ${PORT}`);

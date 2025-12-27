@@ -1,0 +1,15 @@
+meta {
+  name: DeleteProj
+  type: http
+  seq: 8
+}
+
+delete {
+  url: http://localhost:5000/api/projects/
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
