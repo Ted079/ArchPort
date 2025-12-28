@@ -1,0 +1,15 @@
+meta {
+  name: UpdateProject
+  type: http
+  seq: 9
+}
+
+patch {
+  url: http://localhost:5000/api/project
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

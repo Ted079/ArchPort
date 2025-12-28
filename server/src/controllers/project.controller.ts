@@ -1,6 +1,8 @@
 import type { Request, Response } from "express";
 import { CreateProjectDTO } from "../../../shared/types";
 import Project from "../models/project.model";
+import cloudinary from "../utils/cloudinary";
+import fs from "fs";
 
 export const createProject = async (req: Request, res: Response) => {
   try {
@@ -57,7 +59,7 @@ export const deleteProject = async (req: Request, res: Response) => {
     if (result.deletedCount === 0) {
       return res.status(404).json({ message: "Project not found" });
     }
-    
+
     res.json({
       success: true,
     });
@@ -66,25 +68,72 @@ export const deleteProject = async (req: Request, res: Response) => {
   }
 };
 
-// export const getProjectById = async (req: Request, res: Response) => {
-//   try {
-//     const projectId = req.params.id;
-//     Project.findByIdAndUpdate({}, {}, {});
-//   } catch (error) {
-//     res.status(500).json({ message: "Server error" });
-//   }
-// };
+export const updateProject = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { title, description, images, category }: CreateProjectDTO = req.body;
+    const project = await Project.findByIdAndUpdate(
+      id,
+      {
+        title,
+        description,
+        images,
+        category,
+        author: req.userId,
+      },
+      { new: true }
+    );
 
-// export const getOneProj = async (req: Request, res: Response) => {
-//   try {
-//     const { id } = req.params;
-//     const proj = await Project.findById(id);
-//     if (!proj) {
-//       return res.status(404).json({ message: "Project not found" });
-//     }
-//     await proj.save();
-//     res.status(201).json(proj);
-//   } catch (error) {
-//     res.status(500).json({ message: "Server error" });
-//   }
-// };
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    res.status(201).json(project);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const uploadImagesRoute = async (req: Request, res: Response) => {
+  if (!req.files || !Array.isArray(req.files) || req.files.length === 0) {
+    return res
+      .status(400)
+      .json({ success: false, message: "No file uploaded" });
+  }
+
+  try {
+    const uploadPromises = req.files.map(async (file) => {
+      const result = await cloudinary.uploader.upload(file.path, {
+        folder: "projects_name",
+      });
+
+      if (fs.existsSync(file.path)) {
+        fs.unlinkSync(file.path);
+      }
+
+      return {
+        url: result.irl,
+        publicId: result.public_id,
+      };
+    });
+
+    const uploadImages = await Promise.all(uploadPromises);
+
+    res.status(200).json({
+      success: true,
+      message: "Image uploaded and local file deleted",
+      images: uploadImages,
+    });
+  } catch (error: any) {
+    console.error("Cloudinary error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Upload to Cloudinary failed",
+      error: error.message,
+    });
+  }
+};
+
+//delete image
+//upload image for avatar
+// Создай отдельный контроллер для аватарки
