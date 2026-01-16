@@ -10,6 +10,7 @@ export const ROUTES = {
     TERMS: "/terms",
 
     PROFILE: "/profile",
+    UPLOADPROJECT: "/upload",
     SETTINGS: "/profile/settings",
     CREATE: "/profile/create",
 };

@@ -1,17 +1,19 @@
 import { useEffect } from "react";
-import Hero from "../../components/Header/Hero";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { getProjects } from "../../store/project/projectSlice";
 
-const Home = () => {
+const Profile = () => {
   const dispacth = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
   const { items } = useAppSelector((state) => state.project);
-  console.log(items);
 
   useEffect(() => {
-    dispacth(getProjects());
+    if (user?._id) {
+      dispacth(getProjects(user._id));
+    }
   }, [dispacth]);
+
+  console.log(items)
   return (
     <div>
       Homeeeeeeeeee!
@@ -22,5 +24,5 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Profile;
 

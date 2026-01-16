@@ -1,0 +1,24 @@
+meta {
+  name: UploadAvatar
+  type: http
+  seq: 11
+}
+
+post {
+  url: http://localhost:5000/api/auth/avatar
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTA1NTljMTMwY2VhZGUzN2UzNTA1ZiIsImlhdCI6MTc2NzAzNDkzOSwiZXhwIjoxNzY3NjM5NzM5fQ.G2pWxHU-Q7s5tSFTA3Tt5EbbXL8_NABHlI72PBF5pUM
+}
+
+body:multipart-form {
+  image: @file(C:\self\zr.s\wallhaven-13oq3v.jpg)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

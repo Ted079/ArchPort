@@ -6,6 +6,8 @@ import Details from "../../pages/Details/Details";
 import Login from "../../pages/auth/Login";
 import Signup from "../../pages/auth/Signup";
 import PrivateRoute from "./PrivateRoute";
+import Profile from "../../pages/auth/Profile";
+import Upload from "../UploadProject/Upload";
 
 const AppRoutes = () => {
   return (
@@ -14,6 +16,8 @@ const AppRoutes = () => {
         <Route index element={<Home />} />
         <Route element={<PrivateRoute />}>
           <Route path={ROUTES.DETAILS} element={<Details />} />
+          <Route path={ROUTES.PROFILE} element={<Profile />} />
+          <Route path={ROUTES.UPLOADPROJECT} element={<Upload />} />
         </Route>
       </Route>
       <Route path={ROUTES.LOGIN} element={<Login />} />

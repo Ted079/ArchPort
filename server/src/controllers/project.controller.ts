@@ -12,7 +12,7 @@ export const createProject = async (req: Request, res: Response) => {
       description,
       images,
       category,
-      author: req?.userId,
+      author: req.userId,
     });
 
     res.status(201).json(project);
@@ -23,9 +23,18 @@ export const createProject = async (req: Request, res: Response) => {
 
 export const getAllProjects = async (req: Request, res: Response) => {
   try {
-    const projects = await Project.find()
+    const { authorId } = req.query;
+
+    const filter: any = {};
+
+    if (authorId) {
+      filter.author = authorId;
+    }
+
+    const projects = await Project.find(filter)
       .populate("author")
       .sort({ createdAt: -1 });
+
     res.status(200).json(projects);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
@@ -43,7 +52,7 @@ export const getProjectById = async (req: Request, res: Response) => {
     if (!proj) {
       return res.status(404).json({ message: "Project not found" });
     }
-    res.status(201).json(proj);
+    res.status(200).json(proj);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -104,7 +113,7 @@ export const uploadImagesRoute = async (req: Request, res: Response) => {
   try {
     const uploadPromises = req.files.map(async (file) => {
       const result = await cloudinary.uploader.upload(file.path, {
-        folder: "projects_name",
+        folder: "uploads",
       });
 
       if (fs.existsSync(file.path)) {
@@ -112,7 +121,7 @@ export const uploadImagesRoute = async (req: Request, res: Response) => {
       }
 
       return {
-        url: result.irl,
+        url: result.url,
         publicId: result.public_id,
       };
     });
@@ -134,6 +143,4 @@ export const uploadImagesRoute = async (req: Request, res: Response) => {
   }
 };
 
-//delete image
-//upload image for avatar
-// Создай отдельный контроллер для аватарки
+//delete image from proj

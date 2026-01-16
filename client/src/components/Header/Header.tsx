@@ -14,36 +14,75 @@ const Header = () => {
 
   return (
     <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-      <div className="container mx-auto flex justify-between items-center px-6 py-6">
-        {/* Logo and Nav Left */}
-        <div className="flex items-center space-x-4 lg:space-x-8">
-          {/* Logo Mobile & Desktop */}
-          <Link to={ROUTES.HOME}>
-            <img
-              className="w-auto h-6 sm:h-7"
-              src="https://merakiui.com/images/full-logo.svg"
-              alt=""
-            />
-          </Link>
+      <div className="container mx-auto px-6 py-6 flex justify-between items-center ">
+        <div className="lg:flex ">
+          <div className="flex items-center space-x-4 ">
+            <Link to={ROUTES.HOME}>
+              <img
+                className="w-auto h-6 sm:h-7"
+                src="https://merakiui.com/images/full-logo.svg"
+                alt="logo"
+              />
+            </Link>
 
-          {/* Nav Desktop */}
+            <div className="flex lg:hidden">
+              <button
+                onClick={toggleMenu}
+                type="button"
+                className="text-gray-500 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400"
+                aria-label="toggle menu"
+              >
+                {!isOpen ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 8h16M4 16h16"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                )}
+              </button>
+            </div>
+          </div>
           <nav
             className={`${
               isOpen
                 ? "translate-x-0 opacity-100"
                 : "opacity-0 -translate-x-full"
-            } absolute inset-x-0 z-20 w-full px-6 py-4 transition-all duration-300 ease-in-out bg-white shadow-md dark:bg-gray-900 lg:bg-transparent lg:dark:bg-transparent lg:shadow-none lg:mt-0 lg:p-0 lg:top-0 lg:relative lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center`}
+            } absolute inset-x-0 z-20 mt-11 w-full px-8 py-6 transition-all duration-300 ease-in-out bg-white shadow-md dark:bg-gray-900 lg:bg-transparent lg:dark:bg-transparent lg:shadow-none lg:mt-0 lg:p-0 lg:top-0 lg:relative lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center`}
           >
             <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:space-y-0 lg:space-x-8">
               <Link
                 to="#"
-                className="font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-400 hover:underline"
+                className=" block font-medium text-gray-700 dark:text-gray-200 lg:mx-8  hover:text-gray-900 dark:hover:text-gray-400 hover:underline"
               >
                 Why us?
               </Link>
               <Link
                 to={ROUTES.DETAILS}
-                className="font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-400 hover:underline"
+                className="block font-medium text-gray-700 dark:text-gray-200 lg:mx-8  hover:text-gray-900 dark:hover:text-gray-400 hover:underline"
               >
                 Details
               </Link>
@@ -51,50 +90,13 @@ const Header = () => {
           </nav>
         </div>
 
-        {/* Burger Menu Mobile */}
-        <div className="flex lg:hidden">
-          <button
-            onClick={toggleMenu}
-            type="button"
-            className="text-gray-500 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400"
-            aria-label="toggle menu"
+        <div className="flex flex-row items-center space-x-8 ">
+          <Link
+            to={ROUTES.UPLOADPROJECT}
+            className="font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-400 hover:underline"
           >
-            {!isOpen ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 8h16M4 16h16"
-                />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            )}
-          </button>
-        </div>
-
-        {/* Auth Right - Desktop */}
-        <div className="lg:flex lg:flex-row lg:items-center lg:space-x-4">
+            Upload Project
+          </Link>
           {!isAuthenticated ? (
             <>
               <Link

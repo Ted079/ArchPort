@@ -7,6 +7,8 @@ import {
 import User from "../models/user.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import cloudinary from "../utils/cloudinary";
+import fs from "fs";
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -91,6 +93,79 @@ export const getMe = async (req: Request, res: Response) => {
     }
 
     res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const uploadAvatar = async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    if (!req.userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "uploads",
+      transformation: [
+        { width: 400, height: 400, crop: "fill", gravity: "face" },
+        { quality: "auto:good" },
+        { fetch_format: "auto" },
+      ],
+    });
+
+    if (fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.userId,
+      {
+        avatar: result.secure_url,
+      },
+      { new: true }
+    ).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "Not found user" });
+    }
+
+    res.status(200).json({
+      message: "Avatar updated successfully",
+      avatar: result.secure_url,
+      user,
+    });
+  } catch (error: any) {
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+    console.log("Cloudinar error:", error);
+    res.status(500).json({ message: "Upload failed", error: error.message });
+  }
+};
+
+export const deleteAvatar = async (req: Request, res: Response) => {
+  if (!req.userId) {
+    res.status(401).json({ message: "Unauthorized" });
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.userId,
+      {
+        avatar: "https://via.placeholder.com/150",
+      },
+      { new: true }
+    ).select("-passsword");
+
+    if (!user) {
+      return res.status(404).json({ user: "User not found" });
+    }
+
+    res.status(200).json({ message: "Avatar deleted", user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

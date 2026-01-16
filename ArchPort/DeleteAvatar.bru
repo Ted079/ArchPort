@@ -1,0 +1,20 @@
+meta {
+  name: DeleteAvatar
+  type: http
+  seq: 12
+}
+
+delete {
+  url: http://localhost:5000/api/auth/avatar
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTA1NTljMTMwY2VhZGUzN2UzNTA1ZiIsImlhdCI6MTc2NzAzNTUzNiwiZXhwIjoxNzY3NjQwMzM2fQ.ThhLXdjzaJLuq3SJ4YrGtbpamEeMJgYNKjjViGQ-KzA
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

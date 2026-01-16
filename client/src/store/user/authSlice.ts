@@ -16,7 +16,7 @@ export const createUser = createAsyncThunk<
   }
 >("auth/createUser", async (credentials: RegisterDTO, thunkAPI) => {
   try {
-    const response = await axios.post(
+    const response = await axios.post<AuthResponse>(
       "http://localhost:5000/api/auth/register",
       credentials
     );
