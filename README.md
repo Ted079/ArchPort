@@ -40,3 +40,8 @@ __.
 │ isRead: boolean         │
 │ createdAt: Date         │
 └─────────────────────────┘
+
+
+
+
+

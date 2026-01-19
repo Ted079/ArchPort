@@ -2,25 +2,22 @@ import { useEffect } from "react";
 import Hero from "../../components/Header/Hero";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { getProjects } from "../../store/project/projectSlice";
+import CategoriesList from "../../components/Categories/CategoriesList";
+import ProjectList from "../../components/Project/ProjectList";
 
 const Home = () => {
   const dispacth = useAppDispatch();
-  const user = useAppSelector((state) => state.auth.user);
   const { items } = useAppSelector((state) => state.project);
-  console.log(items);
 
   useEffect(() => {
     dispacth(getProjects());
   }, [dispacth]);
   return (
     <div>
-      Homeeeeeeeeee!
-      {/* {projects.map((item) => (
-
-      ))} */}
+      <CategoriesList />
+      <ProjectList mode="home" items={items} />
     </div>
   );
 };
 
 export default Home;
-

@@ -18,14 +18,12 @@ const ProjectSchema = new Schema<IProject>(
     },
     images: {
       type: [String],
-      //   required: [true, "At least one image is required"],
-      required: false,
+      required: [true, "At least one image is required"],
     },
     category: {
       type: String,
       enum: Object.values(ProjectCategory),
-      //   required: [true, "category is required"],
-      required: false,
+      required: [true, "category is required"],
     },
     author: {
       type: Schema.Types.ObjectId,
@@ -39,7 +37,7 @@ const ProjectSchema = new Schema<IProject>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 ProjectSchema.index({ title: "text", description: "text" });

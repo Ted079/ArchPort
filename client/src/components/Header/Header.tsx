@@ -1,12 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../utils/route";
 import { useState } from "react";
 import { useAppSelector } from "../../store";
 import Dropdown from "../Dropdown/Dropdown";
+import Button from "../UI/Button";
+import { UploadIcon } from "../UI/icons";
 
 const Header = () => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
@@ -14,7 +17,7 @@ const Header = () => {
 
   return (
     <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-      <div className="container mx-auto px-6 py-6 flex justify-between items-center ">
+      <div className="container mx-auto px-12 py-6 flex justify-between items-center ">
         <div className="lg:flex ">
           <div className="flex items-center space-x-4 ">
             <Link to={ROUTES.HOME}>
@@ -91,12 +94,14 @@ const Header = () => {
         </div>
 
         <div className="flex flex-row items-center space-x-8 ">
-          <Link
-            to={ROUTES.UPLOADPROJECT}
-            className="font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-400 hover:underline"
+          <Button
+            onClick={() => navigate(ROUTES.UPLOADPROJECT)}
+            children="Upload Project"
+            size="sm"
+            variant="primary"
+            icon={<UploadIcon/>}
           >
-            Upload Project
-          </Link>
+          </Button>
           {!isAuthenticated ? (
             <>
               <Link

@@ -6,7 +6,7 @@ import Details from "../../pages/Details/Details";
 import Login from "../../pages/auth/Login";
 import Signup from "../../pages/auth/Signup";
 import PrivateRoute from "./PrivateRoute";
-import Profile from "../../pages/auth/Profile";
+import Profile from "../../pages/Profile/Profile";
 import Upload from "../UploadProject/Upload";
 
 const AppRoutes = () => {
