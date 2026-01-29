@@ -2,6 +2,11 @@
   "devDependencies": {
     "autoprefixer": "^10.4.22",
     "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.17"
+    "tailwindcss": "^4.1.17",
+    "zod": "^4.3.5"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "react-hook-form": "^7.71.1"
   }
 }

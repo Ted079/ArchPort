@@ -18,12 +18,12 @@ const ProjectSchema = new Schema<IProject>(
     },
     images: {
       type: [String],
-      required: [true, "At least one image is required"],
+      required: true,
     },
     category: {
       type: String,
       enum: Object.values(ProjectCategory),
-      required: [true, "category is required"],
+      required: true,
     },
     author: {
       type: Schema.Types.ObjectId,

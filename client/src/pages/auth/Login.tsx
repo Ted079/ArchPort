@@ -1,30 +1,43 @@
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../utils/route";
-import { useState } from "react";
-import type { LoginDTO } from "../../../../shared/types/user.types";
 import { useAppDispatch } from "../../store";
 import { loginUser } from "../../store/user/authSlice";
+import { useForm } from "react-hook-form";
+import {
+  loginSchema,
+  type LoginFormData,
+} from "../../../../shared/validators/auth.validators";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Button from "../../components/UI/Button";
 
 const Login = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [values, setValues] = useState<LoginDTO>({
-    email: "",
-    password: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    mode: "onBlur",
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setValues((prev) => ({ ...prev, [name]: value }));
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      await dispatch(loginUser(data)).unwrap();
+      navigate("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+      //  react-toastify)
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dispatch(loginUser(values));
-    navigate("/");
-  };
+  const inputStyles = (fieldName: keyof LoginFormData) =>
+    `block w-full px-4 py-2 text-gray-700 bg-white border-gray-200 border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300 ${
+      errors[fieldName]
+        ? "border-red-500 focus:border-red-400 focus:ring-red-300"
+        : "border-gray-200 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300"
+    }`;
 
   return (
     <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 lg:max-w-4xl mt-15">
@@ -37,8 +50,9 @@ const Login = () => {
       ></div>
 
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className="w-full px-6 py-8 md:px-8 lg:w-1/2"
+        noValidate
       >
         <div className="flex justify-center mx-auto">
           <img
@@ -103,14 +117,15 @@ const Login = () => {
             Email Address
           </label>
           <input
-            name="email"
+            {...register("email")}
             type="email"
-            value={values.email}
-            onChange={handleChange}
             id="LoggingEmailAddress"
-            className="block w-full px-4 py-2 text-gray-700 bg-white border-gray-200 border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+            className={inputStyles("email")}
           />
         </div>
+        {errors.email && (
+          <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+        )}
 
         <div className="mt-4">
           <div className="flex justify-between">
@@ -129,18 +144,23 @@ const Login = () => {
           </div>
 
           <input
-            name="password"
+            {...register("password")}
             type="password"
-            value={values.password}
-            onChange={handleChange}
             id="loggingPassword"
-            className="block w-full px-4 py-2 text-gray-700 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+            className={inputStyles("password")}
           />
         </div>
+        {errors.password && (
+          <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+        )}
 
         <div className="mt-6">
-          <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
-            Log In
+          {/* <Button size="md" children="Log In" variant="primary" className="w-full px-6 py-3 bg-red-500"/> */}
+          <button
+            disabled={isSubmitting}
+            className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
+          >
+            {isSubmitting ? "Logging in..." : "Log In"}
           </button>
         </div>
 

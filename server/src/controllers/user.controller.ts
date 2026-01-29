@@ -4,6 +4,11 @@ import {
   LoginDTO,
   RegisterDTO,
 } from "../../../shared/types/user.types";
+import {
+  loginSchema,
+  signupSchema,
+  type SignupFormData,
+} from "../../../shared/validators/auth.validators";
 import User from "../models/user.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -12,6 +17,14 @@ import fs from "fs";
 
 export const register = async (req: Request, res: Response) => {
   try {
+    const result = signupSchema.safeParse(req.body);
+
+    if (!result.success) {
+      return res.status(400).json({
+        message: "Registration failed",
+        errors: result.error.issues,
+      });
+    }
     const { email, name, password }: RegisterDTO = req.body;
 
     const existingUser = await User.findOne({ email });
@@ -49,6 +62,13 @@ export const register = async (req: Request, res: Response) => {
 };
 export const login = async (req: Request, res: Response) => {
   try {
+    const result = loginSchema.safeParse(req.body);
+    if (!result.success) {
+      return res.status(400).json({
+        message: "Invalid credentials",
+        errors: result.error.issues,
+      });
+    }
     const { email, password }: LoginDTO = req.body;
 
     const user = await User.findOne({ email }).select("+password");
@@ -126,7 +146,7 @@ export const uploadAvatar = async (req: Request, res: Response) => {
       {
         avatar: result.secure_url,
       },
-      { new: true }
+      { new: true },
     ).select("-password");
 
     if (!user) {
@@ -158,7 +178,7 @@ export const deleteAvatar = async (req: Request, res: Response) => {
       {
         avatar: "https://via.placeholder.com/150",
       },
-      { new: true }
+      { new: true },
     ).select("-passsword");
 
     if (!user) {

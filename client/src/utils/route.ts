@@ -11,6 +11,7 @@ export const ROUTES = {
 
     PROFILE: "/profile",
     UPLOADPROJECT: "/upload",
+    EDTIPROJECT: "/edit",
     SETTINGS: "/profile/settings",
     CREATE: "/profile/create",
 };

@@ -3,9 +3,18 @@ import { CreateProjectDTO } from "../../../shared/types";
 import Project from "../models/project.model";
 import cloudinary from "../utils/cloudinary";
 import fs from "fs";
+import { createProjectSchema } from "../../../shared/validators/project.validators";
 
 export const createProject = async (req: Request, res: Response) => {
   try {
+    const result = createProjectSchema.safeParse(req.body);
+    if (!result.success) {
+      return res.status(400).json({
+        message: "Validation failed",
+        errors: result.error.issues,
+      });
+    }
+
     const { title, description, images, category }: CreateProjectDTO = req.body;
     const project = await Project.create({
       title,
@@ -47,7 +56,7 @@ export const getProjectById = async (req: Request, res: Response) => {
     const proj = await Project.findByIdAndUpdate(
       id,
       { $inc: { views: 1 } },
-      { new: true }
+      { new: true },
     ).populate("author");
     if (!proj) {
       return res.status(404).json({ message: "Project not found" });
@@ -79,6 +88,14 @@ export const deleteProject = async (req: Request, res: Response) => {
 
 export const updateProject = async (req: Request, res: Response) => {
   try {
+    const result = createProjectSchema.safeParse(req.body);
+    if (!result.success) {
+      return res.status(400).json({
+        message: "Validation failed",
+        errors: result.error.issues,
+      });
+    }
+
     const { id } = req.params;
     const { title, description, images, category }: CreateProjectDTO = req.body;
     const project = await Project.findByIdAndUpdate(
@@ -90,7 +107,7 @@ export const updateProject = async (req: Request, res: Response) => {
         category,
         author: req.userId,
       },
-      { new: true }
+      { new: true },
     );
 
     if (!project) {
@@ -104,6 +121,7 @@ export const updateProject = async (req: Request, res: Response) => {
 };
 
 export const uploadImagesRoute = async (req: Request, res: Response) => {
+  const { id: projectId } = req.params;
   if (!req.files || !Array.isArray(req.files) || req.files.length === 0) {
     return res
       .status(400)
@@ -121,17 +139,31 @@ export const uploadImagesRoute = async (req: Request, res: Response) => {
       }
 
       return {
-        url: result.url,
+        url: result.secure_url,
         publicId: result.public_id,
       };
     });
 
     const uploadImages = await Promise.all(uploadPromises);
+    const imgUrls = uploadImages.map((img) => img.url);
+
+    const project = await Project.findByIdAndUpdate(
+      projectId,
+      {
+        images: imgUrls,
+      },
+      { new: true },
+    ).populate("author");
+
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
 
     res.status(200).json({
       success: true,
       message: "Image uploaded and local file deleted",
       images: uploadImages,
+      project,
     });
   } catch (error: any) {
     console.error("Cloudinary error:", error);

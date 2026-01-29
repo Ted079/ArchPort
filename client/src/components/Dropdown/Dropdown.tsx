@@ -30,7 +30,6 @@ const Dropdown = () => {
 
   return (
     <div className="relative inline-block " ref={ref}>
-      
       <div
         onMouseEnter={mouseEnterHandler}
         onMouseLeave={mouseLeaveHandler}
@@ -39,7 +38,8 @@ const Dropdown = () => {
       >
         <div className="flex items-center gap-x-6">
           <img
-            className="object-cover w-12 h-12 rounded-full ring ring-gray-300 dark:ring-gray-600 "
+            className="object-cover w-10.5 h-10.5 rounded-full ring ring-gray-300 dark:ring-gray-600  transition duration-200 
+               focus:brightness-105 hover:brightness-105"
             src={user?.avatar}
             alt="avatar"
           />
@@ -64,7 +64,7 @@ const Dropdown = () => {
           className="flex items-center p-3 -mt-2 text-sm text-gray-600 transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
         >
           <img
-            className="flex-shrink-0 object-cover mx-1 rounded-full w-9 h-9"
+            className="flex-shrink-0 object-cover mx-1 rounded-full w-12 h-12"
             src={user?.avatar}
             alt="avatar"
           />

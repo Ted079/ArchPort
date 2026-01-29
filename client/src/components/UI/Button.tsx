@@ -1,7 +1,7 @@
 import React from "react";
 
 type ButtonSizes = "sm" | "md" | "lg";
-type ButtonVariant = "primary" | "outline";
+type ButtonVariant = "primary" | "outline" | "secondary" | "upload";
 
 interface ButtonProps {
   children: React.ReactNode;
@@ -9,6 +9,9 @@ interface ButtonProps {
   size?: ButtonSizes;
   variant?: ButtonVariant;
   icon?: React.ReactNode;
+  className?: string;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
 const sizeClasses = {
@@ -19,9 +22,13 @@ const sizeClasses = {
 
 const variantClasses = {
   primary:
-    "bg-blue-600 text-white border-transparent rounded-4xl hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600",
+    "bg-[#252525] text-white border-transparent rounded-4xl hover:opacity-80 ",
   outline:
-    "bg-transparent border-gray-200  rounded-4xl text-gray-600 hover:bg-gray-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-gray-800",
+    "bg-transparent border border-gray-200  rounded-4xl hover:bg-gray-50 ",
+  secondary:
+    "bg-gray-100  border border-gray-200 rounded-4xl hover:bg-gray-200 ",
+  upload:
+    "bg-transparent  border-2  border-[#d9caf1] rounded-4xl hover:bg-gray-50 ",
 };
 
 const Button = ({
@@ -30,12 +37,15 @@ const Button = ({
   size = "md",
   variant = "outline",
   icon,
+  className = "",
+  disabled = false,
 }: ButtonProps) => {
   return (
     <div className="flex overflow-hidden rounded-lg  w-fit">
       <button
-        //  gap-x-3
-        className={`flex items-center font-medium  border font-medium text-gray-600 transition-colors duration-200 gap-x-2  ${variantClasses[variant]} ${sizeClasses[size]}`}
+        className={`flex items-center  transition-colors duration-200 gap-x-2  ${variantClasses[variant]} ${sizeClasses[size]} ${className} ${
+          disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+        }`}
         onClick={onClick}
       >
         {icon}
@@ -46,4 +56,3 @@ const Button = ({
 };
 
 export default Button;
-

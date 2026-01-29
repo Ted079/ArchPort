@@ -10,9 +10,9 @@ const ProjectsCard = ({ images, author, title, views, mode }: ProjectCardProps) 
   return (
     <div>
       <div
-        className="overflow-hidden bg-cover rounded-lg cursor-pointer h-60 group"
+        className="overflow-hidden bg-cover rounded-lg cursor-pointer h-55 group"
         style={{
-          backgroundImage: `url(${images})`,
+          backgroundImage: `url(${images[0]})`,
         }}
       >
         <div className="flex flex-col justify-center w-full h-full px-8 py-4 transition-opacity duration-300 opacity-0 backdrop-blur-sm bg-gray-800/60 group-hover:opacity-100">

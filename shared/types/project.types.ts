@@ -5,6 +5,11 @@ export enum ProjectCategory {
   INTERIOR = "interior",
   LANDSCAPE = "landscape",
   URBAN = "urban",
+  INDURSTRIAL = "industrial",
+  RENOVATION = "renovation",
+  CONCEPTUAL = "conceptual",
+  RESIDENTIAL = "residential",
+  COMMERCIAL = "commercial",
 }
 
 export interface IProject {
@@ -14,17 +19,13 @@ export interface IProject {
   images: string[];
   category?: ProjectCategory;
   // author: string | IUser;
-  author:  IUser;
+  author: IUser;
   views: number;
   // likes: string[],
 
   createdAt: Date;
   updatedAt: Date;
 }
-
-// export interface IProjectPopulated extends Omit<IProject, "author"> {
-//   author: IUser;
-// }
 
 export interface CreateProjectDTO {
   title: string;

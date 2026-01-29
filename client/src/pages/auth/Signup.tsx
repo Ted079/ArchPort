@@ -1,9 +1,14 @@
-import React, { useState, type HtmlHTMLAttributes } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../utils/route";
 import type { RegisterDTO } from "../../../../shared/types/user.types";
 import { useAppDispatch } from "../../store";
 import { createUser } from "../../store/user/authSlice";
+import {
+  signupSchema,
+  type SignupFormData,
+} from "../../../../shared/validators/auth.validators";
+import AuthIcons from "../../components/UI/icons/AuthIcons";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -14,24 +19,49 @@ const Signup = () => {
     password: "",
   });
 
+  const [error, setError] = useState<Record<string, string>>({});
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setValue((prev) => ({ ...prev, [name]: value }));
+
+    if (error[name]) setError((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const result = signupSchema.safeParse(values);
+
+    if (!result.success) {
+      const errorField: Record<string, string> = {};
+      result.error.issues.forEach((err) => {
+        const path = err.path[0];
+        if (path) {
+          errorField[String(path)] = err.message;
+        }
+      });
+      setError(errorField);
+      return;
+    }
+
     dispatch(createUser(values));
     navigate("/");
-
   };
+
+  const inputStyles = (field: keyof SignupFormData) =>
+    `block w-full py-3 text-gray-700 bg-white border border-gray-200  rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 ${
+      error[field]
+        ? "border-red-500 focus:border-red-400 focus:ring-red-300"
+        : "border-gray-200 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300"
+    }`;
 
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
-        <form className="w-full max-w-md" onSubmit={handleSubmit}>
+        <form className="w-full max-w-md" onSubmit={handleSubmit} noValidate>
           <div className="flex justify-center mx-auto">
             <img
               className="w-auto h-7 sm:h-8"
@@ -48,20 +78,10 @@ const Signup = () => {
 
           <div className="relative flex items-center mt-8">
             <span className="absolute">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
+              <AuthIcons
+                type="user"
                 className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
+              />
             </span>
 
             <input
@@ -69,51 +89,20 @@ const Signup = () => {
               name="name"
               value={values.name}
               onChange={handleChange}
-              className="block w-full py-3 text-gray-700 bg-white border border-gray-200  rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              className={inputStyles("name")}
               placeholder="Username"
             />
           </div>
-
-          {/* <label
-            htmlFor="dropzone-file"
-            className="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-gray-200  border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6 text-gray-300 dark:text-gray-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-              />
-            </svg>
-
-            <h2 className="mx-3 text-gray-400">Profile Photo</h2>
-
-            <input id="dropzone-file" type="file" className="hidden" />
-          </label> */}
+          {error.name && (
+            <p className="text-red-500 text-sm mt-1">{error.name}</p>
+          )}
 
           <div className="relative flex items-center mt-6">
             <span className="absolute">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
+              <AuthIcons
+                type="email"
                 className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
+              />
             </span>
 
             <input
@@ -121,27 +110,20 @@ const Signup = () => {
               name="email"
               value={values.email}
               onChange={handleChange}
-              className="block w-full py-3 text-gray-700 bg-white border border-gray-200  rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              className={inputStyles("email")}
               placeholder="Email address"
             />
           </div>
+          {error.email && (
+            <p className="text-red-500 text-sm mt-1">{error.email}</p>
+          )}
 
           <div className="relative flex items-center mt-4">
             <span className="absolute">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
+              <AuthIcons
+                type="password"
                 className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
+              />
             </span>
 
             <input
@@ -149,35 +131,13 @@ const Signup = () => {
               name="password"
               value={values.password}
               onChange={handleChange}
-              className="block w-full px-10 py-3 text-gray-700 bg-white border border-gray-200  rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              className={inputStyles("password")}
               placeholder="Password"
             />
           </div>
-
-          {/* <div className="relative flex items-center mt-4">
-            <span className="absolute">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
-            </span>
-
-            <input
-              type="password"
-              className="block w-full px-10 py-3 text-gray-700 bg-white border border-gray-200  rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              placeholder="Confirm Password"
-            />
-          </div> */}
+          {error.password && (
+            <p className="text-red-500 text-sm mt-1">{error.password}</p>
+          )}
 
           <div className="mt-6">
             <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">

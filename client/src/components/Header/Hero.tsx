@@ -1,127 +1,153 @@
-import { Link } from "react-router-dom";
-import { ROUTES } from "../../utils/route";
 import { useState } from "react";
-import { useAppSelector } from "../../store";
-import Dropdown from "../Dropdown/Dropdown";
 
 const Hero = () => {
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
-  const [isOpen, setIsOpen] = useState(false);
+  // const { isAuthenticated } = useAppSelector((state) => state.auth);
+  // const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen((prev) => !prev);
-  };
+  // const toggleMenu = () => {
+  //   setIsOpen((prev) => !prev);
+  // };
 
   return (
     <>
-      <header className="bg-white dark:bg-gray-900">
-        <nav className="container mx-auto px-6 py-6 lg:flex lg:justify-between lg:items-center">
-          <div className="lg:flex">
-            <div className="flex items-center">
-              <a href="#">
-                <img
-                  className="w-auto h-6 sm:h-7"
-                  src="https://merakiui.com/images/full-logo.svg"
-                  alt=""
-                />
-              </a>
-              <div className="flex lg:hidden">
-                <button
-                  onClick={toggleMenu}
-                  type="button"
-                  className="text-gray-500 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400"
-                  aria-label="toggle menu"
-                >
-                  {!isOpen ? (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-6 h-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M4 8h16M4 16h16"
-                      />
-                    </svg>
-                  ) : (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-6 h-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  )}
-                </button>
-              </div>
-            </div>
+      <div className="container flex flex-col px-16 py-10 mx-auto space-y-6 lg:h-[26rem] lg:py-16 lg:flex-row lg:items-center ">
+        <div className="w-full lg:w-1/2 ">
+          <div className="lg:max-w-xl">
+            <h1 className=" text-3xl   font-semibold tracking-wide dark:text-white lg:text-5xl leading-tight lg:max-none">
+              Discover Top  Architects & Designers
+            </h1>
 
-            <div
-              className={`${
-                isOpen
-                  ? "translate-x-0 opacity-100"
-                  : "opacity-0 -translate-x-full"
-              } absolute inset-x-0 z-20 w-full px-6 py-4 transition-all duration-300 ease-in-out bg-white shadow-md dark:bg-gray-900 lg:bg-transparent lg:dark:bg-transparent lg:shadow-none lg:mt-0 lg:p-0 lg:top-0 lg:relative lg:w-auto lg:opacity-100 lg:translate-x-0 lg:flex lg:items-center`}
-            >
-              <div className="flex flex-col space-y-8 lg:flex-row lg:items-center lg:space-y-0 lg:-px-8">
-                <a
-                  className="block font-medium text-gray-700 dark:text-gray-200 lg:mx-8 hover:text-gray-900 dark:hover:text-gray-400 hover:underline"
-                  href="#"
+            <p className="mt-4 text-gray-600 dark:text-gray-300">
+              Browse exceptional portfolios from talented professionals
+              specializing in architecture, interiors, and visual design — and
+              find the right expert for your next idea.
+            </p>
+            {/* <div className="grid gap-6 mt-8 sm:grid-cols-2">
+              <div className="flex items-center text-gray-800 -px-3 dark:text-gray-200">
+                <svg
+                  className="w-5 h-5 mx-3"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  glasses Search
-                </a>
-                <a
-                  className="block font-medium text-gray-700 dark:text-gray-200 lg:mx-8 hover:text-gray-900 dark:hover:text-gray-400 hover:underline"
-                  href="#"
-                >
-                  How it works!
-                </a>
-                <a
-                  className="block font-medium text-gray-700 dark:text-gray-200 lg:mx-8 hover:text-gray-900 dark:hover:text-gray-400 hover:underline"
-                  href="#"
-                >
-                  Why us?
-                </a>
-              </div>
-            </div>
-          </div>
-         
-         
-          <div className="lg:flex lg:flex-row lg:items-center lg:space-x-4 ">
-            {!isAuthenticated ? (
-              <>
-                <Link
-                  to={ROUTES.SIGNUP}
-                  className="font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-400 hover:underline"
-                >
-                  Sign Up
-                </Link>
-                <Link
-                  to={ROUTES.LOGIN}
-                  className="flex items-center justify-center px-5 py-2 text-sm font-medium tracking-wide text-center text-white capitalize transition-colors duration-300 transform bg-gray-700 rounded-lg hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
-                >
-                  Log In
-                </Link>
-              </>
-            ) : (
-              <Dropdown />
-            )}
-          </div>
-        </nav>
-      </header>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
 
-      
+                <span className="mx-3">Premium selection</span>
+              </div>
+
+              <div className="flex items-center text-gray-800 -px-3 dark:text-gray-200">
+                <svg
+                  className="w-5 h-5 mx-3"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+
+                <span className="mx-3">Insurance</span>
+              </div>
+
+              <div className="flex items-center text-gray-800 -px-3 dark:text-gray-200">
+                <svg
+                  className="w-5 h-5 mx-3"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+
+                <span className="mx-3">All legal documents</span>
+              </div>
+
+              <div className="flex items-center text-gray-800 -px-3 dark:text-gray-200">
+                <svg
+                  className="w-5 h-5 mx-3"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+
+                <span className="mx-3">From US glasses dealers</span>
+              </div>
+
+              <div className="flex items-center text-gray-800 -px-3 dark:text-gray-200">
+                <svg
+                  className="w-5 h-5 mx-3"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+
+                <span className="mx-3">Payment Security</span>
+              </div>
+
+              <div className="flex items-center text-gray-800 -px-3 dark:text-gray-200">
+                <svg
+                  className="w-5 h-5 mx-3"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+
+                <span className="mx-3">Fast shipping (+ Express)</span>
+              </div>
+            </div> */}
+          </div>
+        </div>
+
+        <div className="flex items-center justify-center w-full h-102 lg:w-1/2">
+          <img
+            className="object-cover w-full h-full max-w-xl rounded-3xl"
+            src="https://w.wallhaven.cc/full/ne/wallhaven-ne5dxw.jpg"
+            alt="glasses photo"
+          />
+        </div>
+      </div>
     </>
   );
 };

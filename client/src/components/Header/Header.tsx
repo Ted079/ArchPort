@@ -16,23 +16,21 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+    <header className="bg-white dark:bg-gray-900  dark:border-gray-700">
       <div className="container mx-auto px-12 py-6 flex justify-between items-center ">
         <div className="lg:flex ">
           <div className="flex items-center space-x-4 ">
             <Link to={ROUTES.HOME}>
-              <img
-                className="w-auto h-6 sm:h-7"
-                src="https://merakiui.com/images/full-logo.svg"
-                alt="logo"
-              />
+              <h1 className="font-logo text-3xl transition-all duration-300 hover:opacity-80 ">
+                Archport
+              </h1>
             </Link>
 
             <div className="flex lg:hidden">
               <button
                 onClick={toggleMenu}
                 type="button"
-                className="text-gray-500 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400"
+                className="text-gray-500 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 "
                 aria-label="toggle menu"
               >
                 {!isOpen ? (
@@ -79,43 +77,66 @@ const Header = () => {
             <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:space-y-0 lg:space-x-8">
               <Link
                 to="#"
-                className=" block font-medium text-gray-700 dark:text-gray-200 lg:mx-8  hover:text-gray-900 dark:hover:text-gray-400 hover:underline"
+                className="lg:ml-12 block font-semibold text-sm dark:text-gray-200 lg:mx-2 hover:opacity-70 hover:text-gray-900 dark:hover:text-gray-400 "
               >
                 Why us?
               </Link>
               <Link
-                to={ROUTES.DETAILS}
-                className="block font-medium text-gray-700 dark:text-gray-200 lg:mx-8  hover:text-gray-900 dark:hover:text-gray-400 hover:underline"
+                to="#"
+                className=" block font-semibold text-sm dark:text-gray-200 lg:mx-4 hover:opacity-70 hover:text-gray-900 dark:hover:text-gray-400 "
               >
-                Details
+                Projects
+              </Link>
+              <Link
+                to={ROUTES.DETAILS}
+                className="block font-semibold text-sm dark:text-gray-200 lg:mx-4 hover:opacity-70 dark:hover:text-gray-400 "
+              >
+                Blogs
+              </Link>
+              <Link
+                to={ROUTES.DETAILS}
+                className="block font-semibold text-sm dark:text-gray-200 lg:mx-4 hover:opacity-70 dark:hover:text-gray-400 "
+              >
+                Firms
               </Link>
             </div>
           </nav>
         </div>
 
-        <div className="flex flex-row items-center space-x-8 ">
-          <Button
-            onClick={() => navigate(ROUTES.UPLOADPROJECT)}
-            children="Upload Project"
-            size="sm"
-            variant="primary"
-            icon={<UploadIcon/>}
-          >
-          </Button>
+        <div className="flex flex-row items-center space-x-4 ">
+          {isAuthenticated && (
+            <Button
+              onClick={() => navigate(ROUTES.UPLOADPROJECT)}
+              size="sm"
+              variant="outline"
+              icon={<UploadIcon />}
+              className="font-bold "
+            >
+              Upload Project
+            </Button>
+          )}
           {!isAuthenticated ? (
             <>
-              <Link
-                to={ROUTES.SIGNUP}
-                className="font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-400 hover:underline"
+              <Button
+                onClick={() => {
+                  navigate(ROUTES.SIGNUP);
+                }}
+                size="md"
+                variant="outline"
+                className=""
               >
                 Sign Up
-              </Link>
-              <Link
-                to={ROUTES.LOGIN}
-                className="flex items-center justify-center px-5 py-2 text-sm font-medium tracking-wide text-center text-white capitalize transition-colors duration-300 transform bg-gray-700 rounded-lg hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
+              </Button>
+              <Button
+                onClick={() => {
+                  navigate(ROUTES.LOGIN);
+                }}
+                size="md"
+                variant="primary"
+                className=""
               >
                 Log In
-              </Link>
+              </Button>
             </>
           ) : (
             <Dropdown />
