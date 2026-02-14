@@ -38,5 +38,4 @@ Status: In active development.
 This project was built to practice full-stack development (MERN), learn backend basics, improve TypeScript skills on both client and server, and work with file uploads and image storage.
 The main idea is to create a platform for architecture students to publish their projects — while I gain hands-on experience with modern frontend and backend technologies.
 
-- Pagination  
-- UI/UX improvements  
+
