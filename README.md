@@ -3,7 +3,7 @@
 ArchPort is a full-stack MERN platform for showcasing architectural, interior, and landscape projects.
 Designed as a learning platform where architecture students can upload and share their work.
 
-Status: In active development.
+## Status: In active development.
 
 ---
 ##  Current Features
