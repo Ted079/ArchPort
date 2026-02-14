@@ -34,18 +34,9 @@ Status: In active development.
 - bcrypt
 
 ---
-## 🎯 Project Goal
+##  Project Goal
 This project was built to practice full-stack development (MERN), learn backend basics, improve TypeScript skills on both client and server, and work with file uploads and image storage.
 The main idea is to create a platform for architecture students to publish their projects — while I gain hands-on experience with modern frontend and backend technologies.
 
----
-## 🚧 In Progress / Planned
-- Project detail page  
-- Categories & advanced search  
-- Favorites / likes  
-- Edit & delete projects UI  
-- User profile editing + avatar update  
-- Responsive layouts  
-- RTK Query refactor  
 - Pagination  
 - UI/UX improvements  
