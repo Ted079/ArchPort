@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { getProjects } from "../../store/project/projectSlice";
-import UserInfo from "./UserInfo";
+import UserInfo from "../../components/User/UserInfo";
 import ProjectList from "../../components/Project/ProjectList";
 import CategoriesList from "../../components/Categories/CategoriesList";
 

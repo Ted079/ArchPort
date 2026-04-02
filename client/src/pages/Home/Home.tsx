@@ -15,7 +15,7 @@ const Home = () => {
   }, [dispacth]);
   return (
     <div>
-      <Hero/>
+      <Hero items={items}/>
       <UploadProjectSection/>
       <CategoriesList />
       <ProjectList mode="home" items={items} />

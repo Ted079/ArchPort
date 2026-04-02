@@ -1,4 +1,4 @@
-import { IUser } from "./user.types";
+import { type IUser } from "./user.types";
 
 export enum ProjectCategory {
   ARCHITECTURE = "architecture",
@@ -16,9 +16,9 @@ export interface IProject {
   _id: string;
   title: string;
   description: string;
+  location: string;
   images: string[];
   category?: ProjectCategory;
-  // author: string | IUser;
   author: IUser;
   views: number;
   // likes: string[],
@@ -32,4 +32,7 @@ export interface CreateProjectDTO {
   description: string;
   images: string[];
   category: ProjectCategory;
+  location: string;
 }
+
+

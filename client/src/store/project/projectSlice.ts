@@ -8,6 +8,7 @@ import type {
   IProject,
 } from "../../../../shared/types/project.types";
 import axios from "axios";
+import { BASE_URL } from "../../utils/constants";
 
 export const getProjects = createAsyncThunk<
   IProject[],
@@ -16,8 +17,8 @@ export const getProjects = createAsyncThunk<
 >("project/getProjects", async (authorId, thunkAPI) => {
   try {
     const url = authorId
-      ? `http://localhost:5000/api/projects?authorId=${authorId}`
-      : `http://localhost:5000/api/projects`;
+      ? `${BASE_URL}/projects?authorId=${authorId}`
+      : `${BASE_URL}/projects`;
     const res = await axios.get<IProject[]>(url);
     return res.data;
   } catch (error) {
@@ -32,16 +33,57 @@ export const createProject = createAsyncThunk<
 >("project/createProject", async (payload, thunkAPI) => {
   try {
     const token = localStorage.getItem("token");
-    const res = await axios.post<IProject>(
-      "http://localhost:5000/api/projects",
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    const res = await axios.post<IProject>(`${BASE_URL}/projects`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     return res.data;
+  } catch (error: any) {
+    console.log("SERVER ERROR DATA:", error.response?.data);
+    const message = error?.data?.message || "Server Error";
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+export const deleteProj = createAsyncThunk<
+  IProject,
+  string,
+  { rejectValue: string }
+>("project/deleteProject", async (id, thunkAPI) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.delete(`${BASE_URL}/projects/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error: any) {
+    console.log("SERVER ERROR DATA:", error.response?.data);
+    const message = error?.data?.message || "Server Error";
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+interface UpdateProjectDTO extends CreateProjectDTO {
+  _id: string;
+}
+
+export const updateProject = createAsyncThunk<
+  IProject,
+  UpdateProjectDTO,
+  { rejectValue: string }
+>("project/updateProject", async (payload, thunkAPI) => {
+  try {
+    const token = localStorage.getItem("token");
+    const { _id, ...data } = payload;
+    const response = await axios.patch(`${BASE_URL}/projects/${_id}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
   } catch (error: any) {
     console.log("SERVER ERROR DATA:", error.response?.data);
     const message = error?.data?.message || "Server Error";
@@ -59,38 +101,46 @@ interface UploadResoponse {
 interface UploadImagesPayload {
   projectId: string;
   formData: FormData;
+  currentImages?: string[];
 }
 
 export const uploadImageFiles = createAsyncThunk<
   IProject,
   UploadImagesPayload,
   { rejectValue: string }
->("images/uploadImageFiles", async ({ projectId, formData }, thunkAPI) => {
-  try {
-    const token = localStorage.getItem("token");
-    const res = await axios.post<UploadResoponse>(
-      `http://localhost:5000/api/projects/${projectId}/upload`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
+>(
+  "images/uploadImageFiles",
+  async ({ projectId, formData, currentImages }, thunkAPI) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.post<UploadResoponse>(
+        `${BASE_URL}/projects/${projectId}/upload`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+          params: currentImages
+            ? { currentImages: JSON.stringify(currentImages) }
+            : {},
         },
-      },
-    );
-    return res.data.project;
-  } catch (error: any) {
-    console.log("SERVER ERROR DATA:", error.response?.data);
-    const message = error?.data?.message || "Server Error";
-    return thunkAPI.rejectWithValue(message);
-  }
-});
+      );
+      return res.data.project;
+    } catch (error: any) {
+      console.log("SERVER ERROR DATA:", error.response?.data);
+      const message = error?.data?.message || "Server Error";
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
 
 interface ProjectState {
   items: IProject[];
   isLoading: boolean;
   isUploading: boolean;
   error: null | string;
+  currentProj: IProject | null;
 }
 
 const initialState: ProjectState = {
@@ -98,6 +148,7 @@ const initialState: ProjectState = {
   isLoading: false,
   isUploading: false,
   error: null,
+  currentProj: null,
 };
 
 const projectSlice = createSlice({
@@ -121,6 +172,7 @@ const projectSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload || "Server Err";
       })
+
       .addCase(createProject.pending, (state) => {
         state.isLoading = true;
       })
@@ -145,7 +197,7 @@ const projectSlice = createSlice({
           const index = state.items.findIndex(
             (project) => project._id === action.payload._id,
           );
-          if (index == -1) {
+          if (index !== -1) {
             state.items[index] = action.payload;
           }
         },
@@ -153,6 +205,39 @@ const projectSlice = createSlice({
       .addCase(uploadImageFiles.rejected, (state, action) => {
         state.isUploading = false;
         state.error = action.payload || "Server Err";
+      })
+      .addCase(updateProject.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(
+        updateProject.fulfilled,
+        (state, action: PayloadAction<IProject>) => {
+          state.isLoading = false;
+          const index = state.items.findIndex(
+            (project) => project._id === action.payload._id,
+          );
+          if (index !== -1) {
+            state.items[index] = action.payload;
+          }
+        },
+      )
+      .addCase(updateProject.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || "Updated failed";
+      })
+      .addCase(deleteProj.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(
+        deleteProj.fulfilled,
+        (state, action: PayloadAction<IProject>) => {
+          state.isLoading = false;
+          state.items = state.items.filter((p) => p._id !== action.payload._id);
+        },
+      )
+      .addCase(deleteProj.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || "Deleted failed";
       });
   },
 });

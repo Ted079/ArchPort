@@ -1,5 +1,3 @@
-import React from "react";
-
 export const UploadIcon = ({
   className = "w-5 h-5",
 }: {

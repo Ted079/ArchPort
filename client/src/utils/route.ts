@@ -2,7 +2,6 @@ export const ROUTES = {
     HOME: "/",
     LOGIN: "/singin",
     SIGNUP: "/singup",
-    DETAILS: "/details",
 
 
     CATEGORY: "/categories/:id",
@@ -10,8 +9,11 @@ export const ROUTES = {
     TERMS: "/terms",
 
     PROFILE: "/profile",
-    UPLOADPROJECT: "/upload",
-    EDTIPROJECT: "/edit",
-    SETTINGS: "/profile/settings",
-    CREATE: "/profile/create",
+    PROFILESETTINGS: "/profile/settings",
+    PROFILECREATE: "/profile/create",
+
+    UPLOADPROJECT: "/uploads",
+    PROJECTDETAILS: "/details/:id",
+    EDTIPROJECT: "/uploads/:id/edit",
+    
 };
