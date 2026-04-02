@@ -3,12 +3,16 @@ import authReducer from "./user/authSlice";
 import projectReducer from "./project/projectSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
+import { projectSlice } from "./api/projectSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     project: projectReducer,
+    [projectSlice.reducerPath]: projectSlice.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(projectSlice.middleware),
   devTools: true,
 });
 

@@ -5,6 +5,8 @@ import { useAppSelector } from "../../store";
 import Dropdown from "../Dropdown/Dropdown";
 import Button from "../UI/Button";
 import { UploadIcon } from "../UI/icons";
+import { CloseIcon } from "../UI/icons/CloseIcon";
+import { BurgerIcon } from "../UI/icons/BurgerIcon";
 
 const Header = () => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
@@ -17,15 +19,9 @@ const Header = () => {
 
   return (
     <header className="bg-white dark:bg-gray-900  dark:border-gray-700">
-      <div className="container mx-auto px-12 py-6 flex justify-between items-center ">
+      <div className="max-w-full  mx-auto px-3 sm:px-10 py-6 flex justify-between items-center ">
         <div className="lg:flex ">
           <div className="flex items-center space-x-4 ">
-            <Link to={ROUTES.HOME}>
-              <h1 className="font-logo text-3xl transition-all duration-300 hover:opacity-80 ">
-                Archport
-              </h1>
-            </Link>
-
             <div className="flex lg:hidden">
               <button
                 onClick={toggleMenu}
@@ -34,38 +30,17 @@ const Header = () => {
                 aria-label="toggle menu"
               >
                 {!isOpen ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4 8h16M4 16h16"
-                    />
-                  </svg>
+                 <BurgerIcon/>
                 ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
+                 <CloseIcon/>
                 )}
               </button>
             </div>
+            <Link to={ROUTES.HOME}>
+              <h1 className="font-logo text-3xl transition-all duration-300 hover:opacity-80 ">
+              Archport
+              </h1>
+            </Link>
           </div>
           <nav
             className={`${
@@ -88,13 +63,13 @@ const Header = () => {
                 Projects
               </Link>
               <Link
-                to={ROUTES.DETAILS}
+                to={ROUTES.NOTFOUND}
                 className="block font-semibold text-sm dark:text-gray-200 lg:mx-4 hover:opacity-70 dark:hover:text-gray-400 "
               >
                 Blogs
               </Link>
               <Link
-                to={ROUTES.DETAILS}
+                to={ROUTES.NOTFOUND}
                 className="block font-semibold text-sm dark:text-gray-200 lg:mx-4 hover:opacity-70 dark:hover:text-gray-400 "
               >
                 Firms
@@ -110,7 +85,7 @@ const Header = () => {
               size="sm"
               variant="outline"
               icon={<UploadIcon />}
-              className="font-bold "
+              className="font-bold hidden lg:flex"
             >
               Upload Project
             </Button>

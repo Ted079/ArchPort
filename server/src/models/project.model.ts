@@ -14,7 +14,9 @@ const ProjectSchema = new Schema<IProject>(
       type: String,
       required: true,
       minLength: 1,
-      maxLength: 100,
+    },
+    location: {
+      type: String,
     },
     images: {
       type: [String],

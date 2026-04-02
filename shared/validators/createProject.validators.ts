@@ -1,13 +1,13 @@
 import { z } from "zod";
 import { createProjectSchema } from "./project.validators";
 
-// for createProject from frontend
 export const createProjectFormSchema = createProjectSchema.extend({
   images: z
     .custom<FileList | File[]>()
-    .refine((files) => files.length > 0, "Please select at least one image")
-    .refine((files) => files.length <= 10, "Maximum 5 images")
-    .transform((files) => Array.from(files))
+    .optional()
+    .refine((files) => !files ||files.length > 0, "Please select at least one image")
+    .refine((files) => !files ||files.length <= 10, "Maximum 5 images")
+    .transform((files) => (files? Array.from(files) : []))
     .refine((files) =>
       files.every(
         (file) => file.size <= 5 * 1024 * 1024,

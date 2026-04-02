@@ -6,7 +6,7 @@ import { UploadIcon } from "../UI/icons";
 //change to upload blog then create blog page and need to write logic for choose project type
 const UploadProjectSection = () => {
   return (
-    <div className="sm:px-12  py-4 ">
+    <div className="max-w-full  sm:px-16  py-4 ">
       <Link
         to={ROUTES.UPLOADPROJECT}
         className="bg-[#f8f8fc] lg:flex lg:items-center  cursor-pointer border border-[#f8f8fc] rounded-3xl flex  flex-col md:flex-row gap-3 sm:gap-4 p-5  shadow-xs"

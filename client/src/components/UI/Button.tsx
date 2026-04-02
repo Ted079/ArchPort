@@ -1,10 +1,10 @@
 import React from "react";
 
-type ButtonSizes = "sm" | "md" | "lg";
-type ButtonVariant = "primary" | "outline" | "secondary" | "upload";
+type ButtonSizes = "sm" | "md" | "lg" ;
+type ButtonVariant = "primary" | "outline" | "secondary" | "upload" | "forIcons";
 
 interface ButtonProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   size?: ButtonSizes;
   variant?: ButtonVariant;
@@ -22,13 +22,15 @@ const sizeClasses = {
 
 const variantClasses = {
   primary:
-    "bg-[#252525] text-white border-transparent rounded-4xl hover:opacity-80 ",
+    "bg-[#252525] text-white border-transparent rounded-4xl hover:opacity-80 gap-x-2",
   outline:
-    "bg-transparent border border-gray-200  rounded-4xl hover:bg-gray-50 ",
+    "bg-transparent border border-gray-200  rounded-4xl hover:bg-gray-50 gap-x-2",
   secondary:
-    "bg-gray-100  border border-gray-200 rounded-4xl hover:bg-gray-200 ",
+    "bg-gray-100  border border-gray-200 rounded-4xl hover:bg-gray-200 gap-x-2",
   upload:
-    "bg-transparent  border-2  border-[#d9caf1] rounded-4xl hover:bg-gray-50 ",
+    "bg-transparent  border-2  border-[#d9caf1] rounded-4xl hover:bg-gray-50 gap-x-2",
+  forIcons:
+    "bg-gray-100 border border-gray-200 rounded-2xl hover:bg-gray-200 ",
 };
 
 const Button = ({
@@ -41,9 +43,9 @@ const Button = ({
   disabled = false,
 }: ButtonProps) => {
   return (
-    <div className="flex overflow-hidden rounded-lg  w-fit">
+    <div className="flex overflow-hidden rounded-lg ">  {/* w-fit */}
       <button
-        className={`flex items-center  transition-colors duration-200 gap-x-2  ${variantClasses[variant]} ${sizeClasses[size]} ${className} ${
+        className={`flex items-center  transition-colors duration-200 ${variantClasses[variant]} ${sizeClasses[size]} ${className} ${
           disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
         }`}
         onClick={onClick}

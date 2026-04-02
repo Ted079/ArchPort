@@ -15,12 +15,14 @@ export const createProject = async (req: Request, res: Response) => {
       });
     }
 
-    const { title, description, images, category }: CreateProjectDTO = req.body;
+    const { title, description, images, category, location }: CreateProjectDTO =
+      req.body;
     const project = await Project.create({
       title,
       description,
       images,
       category,
+      location,
       author: req.userId,
     });
 
@@ -70,34 +72,25 @@ export const getProjectById = async (req: Request, res: Response) => {
 export const deleteProject = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const result = await Project.deleteOne({
-      _id: id,
-    });
+    const project = await Project.findByIdAndDelete(id);
 
-    if (result.deletedCount === 0) {
+    if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
 
     res.json({
-      success: true,
+      success: true, project
     });
   } catch (error) {
-    res.status(500).json({ message: "Cant delete Projetc" });
+    res.status(500).json({ message: "Cannot delete project" });
   }
 };
 
 export const updateProject = async (req: Request, res: Response) => {
   try {
-    const result = createProjectSchema.safeParse(req.body);
-    if (!result.success) {
-      return res.status(400).json({
-        message: "Validation failed",
-        errors: result.error.issues,
-      });
-    }
-
     const { id } = req.params;
-    const { title, description, images, category }: CreateProjectDTO = req.body;
+    const { title, description, images, category, location }: CreateProjectDTO =
+      req.body;
     const project = await Project.findByIdAndUpdate(
       id,
       {
@@ -105,6 +98,7 @@ export const updateProject = async (req: Request, res: Response) => {
         description,
         images,
         category,
+        location,
         author: req.userId,
       },
       { new: true },
@@ -122,6 +116,7 @@ export const updateProject = async (req: Request, res: Response) => {
 
 export const uploadImagesRoute = async (req: Request, res: Response) => {
   const { id: projectId } = req.params;
+  const { currentImages } = req.query;
   if (!req.files || !Array.isArray(req.files) || req.files.length === 0) {
     return res
       .status(400)
@@ -147,10 +142,20 @@ export const uploadImagesRoute = async (req: Request, res: Response) => {
     const uploadImages = await Promise.all(uploadPromises);
     const imgUrls = uploadImages.map((img) => img.url);
 
+    let baseImages = [];
+    if (currentImages) {
+      baseImages = JSON.parse(currentImages as string);
+    } else {
+      const currentProject = await Project.findByIdAndUpdate(projectId);
+      baseImages = currentProject?.images || [];
+    }
+
+    const allImages = [...baseImages, ...imgUrls];
+
     const project = await Project.findByIdAndUpdate(
       projectId,
       {
-        images: imgUrls,
+        images: allImages,
       },
       { new: true },
     ).populate("author");

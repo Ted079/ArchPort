@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { IProject } from "../../../../shared/types/project.types";
 import { ViewIcon } from "../UI/icons/ViewIcon";
 
@@ -5,10 +6,17 @@ interface ProjectCardProps extends IProject {
   mode: "home" | "dashboard";
 }
 
-const ProjectsCard = ({ images, author, title, views, mode }: ProjectCardProps) => {
+const ProjectsCard = ({
+  images,
+  author,
+  title,
+  views,
+  mode,
+  _id,
+}: ProjectCardProps) => {
   const isHome = mode === "home";
   return (
-    <div>
+    <Link to={`/details/${_id}`}>
       <div
         className="overflow-hidden bg-cover rounded-lg cursor-pointer h-55 group"
         style={{
@@ -46,7 +54,7 @@ const ProjectsCard = ({ images, author, title, views, mode }: ProjectCardProps) 
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
