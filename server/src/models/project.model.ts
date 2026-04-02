@@ -8,7 +8,7 @@ const ProjectSchema = new Schema<IProject>(
       required: true,
       trim: true,
       minLength: 1,
-      maxLength: 20,
+      maxLength: 100,
     },
     description: {
       type: String,
@@ -20,7 +20,6 @@ const ProjectSchema = new Schema<IProject>(
     },
     images: {
       type: [String],
-      required: true,
     },
     category: {
       type: String,

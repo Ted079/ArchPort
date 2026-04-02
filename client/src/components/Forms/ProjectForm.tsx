@@ -261,14 +261,25 @@ const ProjectForm = ({
                 Cancel
               </Button>
 
+              <div className="text-red-500 mb-4">
+                {Object.keys(form.formState.errors).map((key) => (
+                  <p key={key}>
+                    {key}:{" "}
+                    {
+                      form.formState.errors[key as keyof CreateProjectFormInput]
+                        ?.message
+                    }
+                  </p>
+                ))}
+              </div>
               <Button
                 className="w-full sm:w-auto"
                 size="md"
                 variant="primary"
                 type="submit"
-                disabled={isSubmitted}
+                disabled={isSubmitting}
               >
-                {isSubmitted ? "Loading..." : "Save changes"}
+                {isSubmitting ? "Loading..." : submitBtnText}
               </Button>
             </div>
           </div>

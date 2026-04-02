@@ -5,20 +5,18 @@ import Images from "./Images";
 import { Link } from "react-router-dom";
 import { EditIcon } from "../../components/UI/icons";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { deleteProj, getProjects } from "../../store/project/projectSlice";
 import ProjectList from "../../components/Project/ProjectList";
 import { BinIcon } from "../../components/UI/icons/BinIcon";
 import Modal from "../../components/UI/Modal";
 import WarningIcon from "../../components/UI/icons/Warning";
-import { UseClickOutside } from "../../hooks/UseClickOutside";
-// import Example from "./expl";
+import { BurgerIcon } from "../../components/UI/icons/BurgerIcon";
 
 const Details = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const { data: project, isLoading, error } = useGetOneProjectQuery(id!);
@@ -88,38 +86,64 @@ const Details = () => {
           isOpen={isOpen}
           title="Are you sure?"
           icon={<WarningIcon size="md" />}
-          descrtiption="Deleting this project is permanent. All associated data will be lost and cannot be recovered"
+          description="Deleting this project is permanent. All associated data will be lost and cannot be recovered"
           onCancel={() => setIsOpen(false)}
           onConfirm={handleDelete}
           confirmText="Remove"
           cancelText="Cancel"
-          ref={ref}
         />
 
         <div className="py-4 mx-auto">
           <div className="">
             <div className="">
               <Images images={project?.images} />
-
-              <div className="">
-                <h1 className="max-w-lg mt-12 mb-6 text-2xl font-semibold leading-tight text-gray-800 dark:text-white">
-                  More about this product
-                </h1>
-              </div>
             </div>
 
-            <div className="mt-2">
+            <div className="mt-2 flex flex-col items-center justify-center p-12 mt-6 lg:gap-6 lg:mt-0">
+              <h1 className="max-w-lg mt-12 mb-6 text-3xl font-semibold leading-tight text-gray-800 dark:text-white">
+                More about this product
+              </h1>
               <div className="mb-6">
-                <h3 className="text-amber-500 capitalize">Description</h3>
-                <p className="block mt-2 font-medium text-gray-700  ">
+                {/* <h3 className="text-amber-500 capitalize">Description</h3> */}
+                <p className="block mt-2  text-gray-700  text-xl/8 ">
                   {project?.description}
                 </p>
               </div>
+            </div>
+            {/* <Images images={project?.images} /> */}
 
-              <div className="mb-6">
-                <h3 className="text-amber-500 capitalize">Date of creation</h3>
+            {project?.images.map((i) => (
+              <div className="w-full h-[650px] flex items-center justify-center overflow-hidden  gap-4 mt-5">
+                <img
+                  src={i}
+                  alt="images"
+                  className="max-h-full max-w-full object-contain rounded-md"
+                />
+              </div>
+            ))}
 
-                <p className="block mt-2 font-medium text-gray-700 hover:underline hover:text-gray-500">
+            {/* <div className="w-full h-[650px] flex items-center justify-center overflow-hidden  gap-4 mt-5">
+              <img
+                src={project?.images[3]}
+                alt="images"
+                className="max-h-full max-w-full object-contain rounded-md"
+              />
+            </div>
+
+            <div className="w-full h-[650px] flex items-center justify-center overflow-hidden  gap-4 mt-5">
+              <img
+                src={project?.images[4]}
+                alt="images"
+                className="max-h-full max-w-full object-contain rounded-md"
+              />
+            </div> */}
+
+            <div className="mt-8">
+              <div className="mb-4 flex gap-4">
+                {/* <BinIcon/> */}
+                <p className=" capitalize">Date of creation: </p>
+
+                <p className="block  font-semibold text-gray-700 hover:underline hover:text-gray-500">
                   {project?.createdAt &&
                     new Date(project.createdAt).toLocaleDateString("en-GB", {
                       day: "2-digit",
@@ -129,23 +153,51 @@ const Details = () => {
                 </p>
               </div>
 
-              <div className="mb-6">
-                <h3 className="text-amber-500 capitalize">Project type</h3>
+              <div className="mb-4 flex gap-4">
+                {/* <BurgerIcon/> */}
+                <h3 className=" capitalize">Project type: </h3>
 
                 <a
                   href="#"
-                  className="block mt-2 capitalize font-medium text-gray-700 hover:underline hover:text-gray-500  "
+                  className="block  font-semibold capitalize font-medium text-gray-700 hover:underline hover:text-gray-500  "
                 >
                   {project?.category}
                 </a>
               </div>
 
               {project?.location && (
-                <div className="mb-6">
-                  <h3 className="text-amber-500 capitalize">Location</h3>
+                <div className="mb-4 flex gap-4">
+                  {/* <EditIcon/> */}
 
-                  <p className="block mt-2 font-medium  capitalize">
+                  <h3 className="capitalize">Location: </h3>
+
+                  <p className="block font-semibold font-medium  capitalize">
                     {project.location}
+                  </p>
+                </div>
+              )}
+
+              {project?.location && (
+                <div className="mb-4 flex gap-4">
+                  {/* <BinIcon/> */}
+
+                  <h3 className=" capitalize">Building area: </h3>
+
+                  <p className="block font-semibold  font-medium  capitalize">
+                    {/* {project.location} */}
+                    1,117.45 m²
+                  </p>
+                </div>
+              )}
+
+              {project?.location && (
+                <div className="mb-6 flex gap-4">
+                  {/* <EditIcon/> */}
+                  <h3 className=" capitalize">Firm: </h3>
+
+                  <p className="block font-semibold font-medium  capitalize">
+                    {/* {project.location} */}
+                    Elarch Studio
                   </p>
                 </div>
               )}
@@ -195,6 +247,11 @@ const Details = () => {
               items={items.filter((item) => item._id !== id)}
               mode="dashboard"
               quantity={4}
+            />
+            <ProjectList
+              items={items.filter((item) => item._id !== id)}
+              mode="dashboard"
+              quantity={6}
             />
           </div>
         </div>

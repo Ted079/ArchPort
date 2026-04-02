@@ -7,6 +7,7 @@ import Button from "../UI/Button";
 import { UploadIcon } from "../UI/icons";
 import { CloseIcon } from "../UI/icons/CloseIcon";
 import { BurgerIcon } from "../UI/icons/BurgerIcon";
+import { Logo } from "../UI/Logo";
 
 const Header = () => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
@@ -37,9 +38,7 @@ const Header = () => {
               </button>
             </div>
             <Link to={ROUTES.HOME}>
-              <h1 className="font-logo text-3xl transition-all duration-300 hover:opacity-80 ">
-              Archport
-              </h1>
+              <Logo/>
             </Link>
           </div>
           <nav

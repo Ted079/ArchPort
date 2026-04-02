@@ -8,7 +8,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
 import {
   createProject,
   uploadImageFiles,
@@ -16,6 +16,7 @@ import {
 import ProjectForm from "../../components/Forms/ProjectForm";
 
 const Upload = () => {
+  const { isLoading, isUploading } = useAppSelector((state) => state.project);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const form = useForm<CreateProjectFormInput>({
@@ -86,7 +87,7 @@ const Upload = () => {
         onFileChange={handleFileChange}
         onCancel={() => navigate("/")}
         title="Project Details"
-        // isSubmitting={isLoading}
+        isSubmitting={isLoading || isUploading}
       />
     </>
   );
