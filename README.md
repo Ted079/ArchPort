@@ -1,47 +1,41 @@
 # ArchPort
-__.
 
+ArchPort is a full-stack MERN platform for showcasing architectural, interior, and landscape projects.
+Designed as a learning platform where architecture students can upload and share their work.
 
+## Status: In active development.
 
-┌─────────────────┐
-│     USERS       │
-├─────────────────┤
-│ _id: ObjectId   │◄──────┐
-│ name: string    │       │
-│ email: string   │       │ author
-│ password: string│       │ (reference)
-│ avatar?: string │       │
-│ bio?: string    │       │
-│ createdAt: Date │       │
-└─────────────────┘       │
-                          │
-                          │
-┌─────────────────────────┴─┐
-│       PROJECTS            │
-├───────────────────────────┤
-│ _id: ObjectId             │
-│ title: string             │
-│ description: string       │
-│ images: string[]          │
-│ category: enum            │
-│ author: ObjectId ─────────┘ (ссылка на User)
-│ views: number             │
-│ createdAt: Date           │
-│ updatedAt: Date           │
-└───────────────────────────┘
+---
+##  Current Features
+- User registration & login  
+- JWT authentication  
+- Create / edit / delete projects (CRUD)  
+- Upload project images & user avatars (Cloudinary)  
+- Project filtering & search  
+- User profiles  
+- View counter  
+- Form validation with Zod + React Hook Form  
 
-┌─────────────────────────┐
-│      MESSAGES           │ (опционально для чата)
-├─────────────────────────┤
-│ _id: ObjectId           │
-│ sender: ObjectId ───────┼──► User
-│ receiver: ObjectId ─────┼──► User
-│ text: string            │
-│ isRead: boolean         │
-│ createdAt: Date         │
-└─────────────────────────┘
+---
+## Tech Stack
+### Frontend
+- React + TypeScript (Vite)
+- Redux Toolkit / Async Thunks / RTK Query
+- React Router
+- React Hook Form + Zod
+- Tailwind CSS
+- Axios
 
+### Backend
+- Node.js + Express + TypeScript
+- MongoDB Atlas + Mongoose
+- JWT Authentication
+- Multer + Cloudinary
+- bcrypt
 
-
+---
+##  Project Goal
+This project was built to practice full-stack development (MERN), learn backend basics, improve TypeScript skills on both client and server, and work with file uploads and image storage.
+The main idea is to create a platform for architecture students to publish their projects — while I gain hands-on experience with modern frontend and backend technologies.
 
 

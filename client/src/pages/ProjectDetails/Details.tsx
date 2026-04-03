@@ -6,12 +6,14 @@ import { Link } from "react-router-dom";
 import { EditIcon } from "../../components/UI/icons";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { useEffect, useState } from "react";
+
 import { deleteProj, getProjects } from "../../store/project/projectSlice";
 import ProjectList from "../../components/Project/ProjectList";
 import { BinIcon } from "../../components/UI/icons/BinIcon";
 import Modal from "../../components/UI/Modal";
 import WarningIcon from "../../components/UI/icons/Warning";
 import { BurgerIcon } from "../../components/UI/icons/BurgerIcon";
+
 
 const Details = () => {
   const { id } = useParams<{ id: string }>();
@@ -144,6 +146,7 @@ const Details = () => {
                 <p className=" capitalize">Date of creation: </p>
 
                 <p className="block  font-semibold text-gray-700 hover:underline hover:text-gray-500">
+
                   {project?.createdAt &&
                     new Date(project.createdAt).toLocaleDateString("en-GB", {
                       day: "2-digit",
@@ -160,6 +163,7 @@ const Details = () => {
                 <a
                   href="#"
                   className="block  font-semibold capitalize font-medium text-gray-700 hover:underline hover:text-gray-500  "
+
                 >
                   {project?.category}
                 </a>
@@ -172,6 +176,7 @@ const Details = () => {
                   <h3 className="capitalize">Location: </h3>
 
                   <p className="block font-semibold font-medium  capitalize">
+
                     {project.location}
                   </p>
                 </div>
@@ -201,6 +206,7 @@ const Details = () => {
                   </p>
                 </div>
               )}
+
             </div>
 
             <div className="flex flex-col items-center justify-center mt-8 w-full">
@@ -253,6 +259,7 @@ const Details = () => {
               mode="dashboard"
               quantity={6}
             />
+
           </div>
         </div>
       </div>

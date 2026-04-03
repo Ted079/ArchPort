@@ -5,11 +5,16 @@ meta {
 }
 
 delete {
-  url: http://localhost:5000/api/projects/
+  url: http://localhost:5000/api/projects/69ce601c82af3a79b04e542f
   body: none
-  auth: inherit
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2U1NGNmODJhZjNhNzliMDRlNTQxZiIsImlhdCI6MTc3NTEyOTgwOCwiZXhwIjoxNzc1NzM0NjA4fQ.vs_8z9JXT3nZ-3e0Rw8SoN0xHVdk_YTnI2b7QGgsl3M
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }
