@@ -23,7 +23,7 @@ const Profile = () => {
       {user ? <UserInfo user={user} /> : <p>Loading...</p>}
       <CategoriesList />
 
-      <ProjectList items={items} mode="dashboard" />
+      <ProjectList items={items} showAuthor={false} />
     </div>
   );
 };

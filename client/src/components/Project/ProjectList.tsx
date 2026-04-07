@@ -1,34 +1,69 @@
 import type { IProject } from "../../../../shared/types/project.types";
 import ProjectsCard from "./ProjectsCard";
+import type {
+  CardHeight,
+  GridColumns,
+} from "../../../../shared/types/ui.types";
+import { cn } from "../../utils/twMerge";
+import Button from "../UI/Button";
 
-interface ProjectsPropsForHome {
-  mode: "home";
+const columnClasses: Record<GridColumns, string> = {
+  2: "xl:grid-cols-2",
+  3: "xl:grid-cols-3",
+  4: "xl:grid-cols-4",
+};
+
+interface ProjectsProps {
   items: IProject[];
-  quantity?: number;
+  limit?: number;
+  column?: GridColumns;
+  showAuthor?: boolean;
+  showTitle?: boolean;
+  height?: CardHeight;
+  className?: string;
+  showLoadMore?: boolean;
+  showView?: boolean,
 }
 
-interface ProjectsPropsForDashboard {
-  mode: "dashboard";
-  items: IProject[];
-  quantity?: number;
-}
-
-
-type ProjectsProps = ProjectsPropsForDashboard | ProjectsPropsForHome;
-
-const ProjectList = ({ items, mode, quantity }: ProjectsProps) => {
- 
-  const displayItems = quantity ? items.filter((_, i) => i < quantity ) : items;
+const ProjectList = ({
+  items,
+  limit,
+  column = 4,
+  showAuthor = true,
+  showTitle = false,
+  showLoadMore = false,
+  showView = true,
+  height = "sm",
+  className = "px-16 pb-1",
+}: ProjectsProps) => {
+  const displayItems = limit ? items.filter((_, i) => i < limit) : items;
   return (
-    <section className="bg-white dark:bg-gray-900">
-      <div className="max-w-full px-16 pb-39 mx-auto">
-        <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-12 md:grid-cols-2 xl:grid-cols-4">
-          {displayItems.map((item) => (
-            <ProjectsCard {...item} mode={mode} key={item._id} />
-          ))}
-        </div>
+    <div className={cn("max-w-full mx-auto", className)}>
+      <div
+        className={`grid grid-cols-1 gap-8 mt-8 xl:mt-1 xl:gap-8 md:grid-cols-2 ${columnClasses[column]}`}
+      >
+        {displayItems.map((item) => (
+          <ProjectsCard
+            {...item}
+            showAuthor={showAuthor}
+            showTitle={showTitle}
+            showView={showView}
+            cardHeight={height}
+            key={item._id}
+          />
+        ))}
       </div>
-    </section>
+      {showLoadMore && <div className="my-14 flex justify-center">
+        <Button
+          size="sm"
+          variant="secondary"
+          type="button"
+          className="font-bold hidden lg:flex sm:px-5 sm:py-3"
+        >
+          Load more work
+        </Button>
+      </div>}
+    </div>
   );
 };
 

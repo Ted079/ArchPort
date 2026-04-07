@@ -13,7 +13,14 @@ export const createProjectSchema = z.object({
   // ),
 
   description: z.string().min(1, "Description is required"),
-  location: z.string(),
+  location: z.string().optional(),
+  square: z.number(),
+  firm: z.string().optional().default(""),
+  // tags: z
+  //   .array(z.string().min(1).max(20))
+  //   .max(10, "You can add 10 tags")
+  //   .default([]),
+  tags: z.array(z.string()).default([]),
 
   images: z.array(z.string()).default([]),
   category: z.enum(Object.values(ProjectCategory) as [string, ...string[]], {

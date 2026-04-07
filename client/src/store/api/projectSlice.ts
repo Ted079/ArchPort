@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { IProject } from "../../../../shared/types";
+import { BASE_URL } from "../../utils/constants";
 
 export const projectSlice = createApi({
   reducerPath: "projectApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   tagTypes: ["Project"],
   endpoints: (builder) => ({
     getOneProject: builder.query<IProject, string>({
@@ -14,3 +15,7 @@ export const projectSlice = createApi({
 });
 
 export const { useGetOneProjectQuery } = projectSlice;
+
+
+//переписать slice на rtk
+// https://chatgpt.com/c/69d4b676-4654-832c-b2be-e4bf4173dfd4

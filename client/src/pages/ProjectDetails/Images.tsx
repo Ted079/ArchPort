@@ -46,8 +46,8 @@ const Images = ({ images }: { images: string[] | undefined }) => {
           cursor: "pointer",
         }}
         onSwiper={setThumbsSwiper}
-        spaceBetween={10}
-        slidesPerView={4}
+        spaceBetween={20}
+        slidesPerView={5}
         freeMode={true}
         navigation={true}
         watchSlidesProgress={true}
@@ -56,7 +56,7 @@ const Images = ({ images }: { images: string[] | undefined }) => {
       >
         {images.map((image) => (
           <SwiperSlide key={image}>
-            <div className="w-full h-[250px] overflow-hidden rounded-md cursor-pointer hover:opacity-75">
+            <div className="w-full h-[150px] overflow-hidden rounded-md cursor-pointer hover:opacity-75">
               <img
                 src={image}
                 alt="images"

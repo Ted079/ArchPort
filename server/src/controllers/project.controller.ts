@@ -15,7 +15,7 @@ export const createProject = async (req: Request, res: Response) => {
       });
     }
 
-    const { title, description, images, category, location }: CreateProjectDTO =
+    const { title, description, images, category, location, square, firm, tags }: CreateProjectDTO =
       req.body;
     const project = await Project.create({
       title,
@@ -23,6 +23,9 @@ export const createProject = async (req: Request, res: Response) => {
       images,
       category,
       location,
+      square,
+      firm,
+      tags,
       author: req.userId,
     });
 
@@ -89,7 +92,7 @@ export const deleteProject = async (req: Request, res: Response) => {
 export const updateProject = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { title, description, images, category, location }: CreateProjectDTO =
+    const { title, description, images, category, location ,square, firm, tags }: CreateProjectDTO =
       req.body;
     const project = await Project.findByIdAndUpdate(
       id,
@@ -99,6 +102,9 @@ export const updateProject = async (req: Request, res: Response) => {
         images,
         category,
         location,
+        square,
+        firm,
+        tags,
         author: req.userId,
       },
       { new: true },

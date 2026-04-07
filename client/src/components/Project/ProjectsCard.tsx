@@ -1,24 +1,41 @@
 import { Link } from "react-router-dom";
-import type { IProject } from "../../../../shared/types/project.types";
+import type { CardHeight } from "../../../../shared/types/ui.types";
 import { ViewIcon } from "../UI/icons/ViewIcon";
+import { LikeIcon } from "../UI/icons/LikeIcon";
 
-interface ProjectCardProps extends IProject {
-  mode: "home" | "dashboard";
+interface ProjectsCardProsps {
+  _id: string;
+  images: string[];
+  title: string;
+  views: number;
+  author: { name: string; avatar?: string };
+  showAuthor?: boolean;
+  showTitle?: boolean;
+  showView?: boolean;
+  cardHeight?: CardHeight;
 }
+
+const heightClasses: Record<CardHeight, string> = {
+  sm: "h-64 xl:h-56",
+  md: "h-64 xl:h-72",
+  lg: "h-64 xl:h-96",
+};
 
 const ProjectsCard = ({
   images,
   author,
   title,
   views,
-  mode,
   _id,
-}: ProjectCardProps) => {
-  const isHome = mode === "home";
+  showAuthor,
+  showTitle,
+  showView,
+  cardHeight = "sm",
+}: ProjectsCardProsps) => {
   return (
     <Link to={`/details/${_id}`}>
       <div
-        className="overflow-hidden bg-cover rounded-lg cursor-pointer h-55 group"
+        className={`overflow-hidden bg-cover rounded-lg cursor-pointer ${heightClasses[cardHeight]} group`}
         style={{
           backgroundImage: `url(${images[0]})`,
         }}
@@ -28,31 +45,39 @@ const ProjectsCard = ({
             {title}
           </h2>
 
-          {/* <Button children="" size="sm" icon={<EditIcon />} /> */}
-          {/* дописать кнокпи сохранить и лайки  */}
         </div>
       </div>
-      <div className="flex justify-between mt-1">
+      <div className="flex justify-between mt-1  p-1 rounded-xl">
         <div className="flex gap-x-1 items-center ">
-          {isHome && (
+          {showAuthor && (
             <img
               className="mt-1 h-20 w-20 sm:w-[1.7rem] sm:h-[1.7rem] flex-shrink-0 object-cover rounded-full"
               alt="user"
-              src={author.avatar}
+              src={author.avatar ?? "/default-avatar.png"}
             />
           )}
-          {isHome && (
-            <h2 className="mt-1 ml-1 text-sm font-semibold text-gray-800 capitalize dark:text-white">
+          {showAuthor && (
+            <p className="mt-1 ml-1 text-sm font-semibold text-gray-800 capitalize ">
               {author.name}
-            </h2>
+            </p>
+          )}
+          {showTitle && (
+            <p className="mt-1 ml-1 text-sm font-semibold text-gray-800 capitalize ">
+              {title}
+            </p>
           )}
         </div>
-        <div className="flex items-center">
-          <ViewIcon className="text-gray-500 w-5 h-5 mt-0.5" />
-          <span className="ml-1 text-sm font-semibold text-gray-500 capitalize dark:text-white">
+
+        {showView && <div className="flex items-center">
+          <LikeIcon className="text-gray-400 w-5 h-5 mt-0.5" />
+          <span className="ml-1 text-sm font-semibold text-gray-500 capitalize mr-1 ">
+            {Math.floor(Math.random() * 101)}
+          </span>
+           <ViewIcon className="text-gray-400 w-5 h-5 mt-0.5" />
+          <span className="ml-1 text-sm font-semibold text-gray-500 capitalize ">
             {views}
           </span>
-        </div>
+        </div>}
       </div>
     </Link>
   );

@@ -6,7 +6,7 @@ export const createProjectFormSchema = createProjectSchema.extend({
     .custom<FileList | File[]>()
     .optional()
     .refine((files) => !files ||files.length > 0, "Please select at least one image")
-    .refine((files) => !files ||files.length <= 10, "Maximum 5 images")
+    .refine((files) => !files ||files.length <= 10, "Maximum 10 images")
     .transform((files) => (files? Array.from(files) : []))
     .refine((files) =>
       files.every(

@@ -26,6 +26,19 @@ export const getProjects = createAsyncThunk<
   }
 });
 
+export const getAuthorProjects = createAsyncThunk<
+  IProject[],
+  string | undefined,
+  { rejectValue: string }
+>("project/authorProject", async (authorId, thunkAPI) => {
+  try {
+    const res = await axios.get<IProject[]>(`${BASE_URL}/projects?authorId=${authorId}`);
+    return res.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue("Server error");
+  }
+});
+
 export const createProject = createAsyncThunk<
   IProject,
   CreateProjectDTO,
@@ -137,6 +150,7 @@ export const uploadImageFiles = createAsyncThunk<
 
 interface ProjectState {
   items: IProject[];
+  authorItems: IProject[];
   isLoading: boolean;
   isUploading: boolean;
   error: null | string;
@@ -145,6 +159,7 @@ interface ProjectState {
 
 const initialState: ProjectState = {
   items: [],
+  authorItems: [],
   isLoading: false,
   isUploading: false,
   error: null,
@@ -169,6 +184,23 @@ const projectSlice = createSlice({
       )
 
       .addCase(getProjects.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || "Server Err";
+      })
+
+
+      .addCase(getAuthorProjects.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(
+        getAuthorProjects.fulfilled,
+        (state, action: PayloadAction<IProject[]>) => {
+          state.isLoading = false;
+          state.authorItems = action.payload;
+        },
+      )
+
+      .addCase(getAuthorProjects.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || "Server Err";
       })

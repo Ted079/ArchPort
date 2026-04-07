@@ -6,7 +6,7 @@ import {
   type CreateProjectFormOutput,
 } from "../../../../shared/validators/createProject.validators";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
@@ -27,8 +27,14 @@ const Upload = () => {
       category: ProjectCategory.ARCHITECTURE,
       images: undefined,
       location: "",
+      square: 0,
+      firm: "",
+      tags: [],
     },
   });
+
+  const [tagInput, setTagInput] = useState("");
+  const watchedTags = form.watch("tags") || [];
 
   useEffect(() => {
     form.register("images");
@@ -56,6 +62,9 @@ const Upload = () => {
           category: values.category as ProjectCategory,
           images: [],
           location: values.location,
+          square: values.square,
+          firm: values.firm,
+          tags: values.tags,
         }),
       ).unwrap();
 
@@ -79,6 +88,24 @@ const Upload = () => {
     }
   };
 
+  const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" || e.key === ",") {
+      const tag = tagInput.trim().toLowerCase();
+      e.preventDefault();
+      if (tag && !watchedTags.includes(tag) && watchedTags.length < 10) {
+        form.setValue("tags", [...watchedTags, tag]);
+      }
+      setTagInput("");
+    }
+  };
+
+  const handleTagRemoe = (tag: string) => {
+    form.setValue(
+      "tags",
+      watchedTags.filter((t) => t !== tag),
+    );
+  };
+
   return (
     <>
       <ProjectForm
@@ -88,6 +115,10 @@ const Upload = () => {
         onCancel={() => navigate("/")}
         title="Project Details"
         isSubmitting={isLoading || isUploading}
+        tagInput={tagInput}
+        onTagInputChange={setTagInput}
+        onAddTag={handleAddTag}
+        onRemoveTag={handleTagRemoe}
       />
     </>
   );

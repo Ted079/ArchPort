@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect} from "react";
 import type { UseFormReturn } from "react-hook-form";
 import type { CreateProjectFormInput } from "../../../../shared/validators/createProject.validators";
 import { ProjectCategory } from "../../../../shared/types";
@@ -23,6 +23,11 @@ type Props = {
   title?: string;
   submitBtnText?: string;
   isSubmitting?: boolean;
+
+  tagInput: string;
+  onTagInputChange: (val: string) => void;
+  onAddTag: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onRemoveTag: (tag: string) => void;
 };
 
 const ProjectForm = ({
@@ -37,11 +42,15 @@ const ProjectForm = ({
   title = "Project Details",
   submitBtnText = "Save Changes",
   isSubmitting = false,
+  tagInput,
+  onTagInputChange,
+  onAddTag,
+  onRemoveTag,
 }: Props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitted },
+    formState: { errors},
     watch,
     setValue,
   } = form;
@@ -49,6 +58,8 @@ const ProjectForm = ({
   useEffect(() => {
     register("images");
   }, [register]);
+
+  const watchedTags = watch("tags") || [];
 
   const navigate = useNavigate();
   const watchedImages = watch("images");
@@ -222,7 +233,7 @@ const ProjectForm = ({
                     />
                     <div
                       className="px-3 sm:px-6 py-1 py-2 rounded-full border text-xs sm:text-sm transition-all 
-                    peer-checked:bg-[#333333] peer-checked:text-white
+                    peer-checked:bg-[#252525] peer-checked:border-transparent peer-checked:text-white 
                     border-gray-300 hover:border-stone-400"
                     >
                       {cat.charAt(0).toUpperCase() + cat.slice(1)}
@@ -248,6 +259,75 @@ const ProjectForm = ({
                      border-gray-300 focus:border-stone-500 "
                 placeholder="Add location"
               />
+            </div>
+            <div className="mt-8">
+              <label className="block mb-3 font-medium  dark:text-gray-200">
+                Firm
+              </label>
+              <input
+                {...register("firm")}
+                type="text"
+                className="w-full py-2  px-4  rounded-lg  focus:outline-none border transition-all 
+                     border-gray-300 focus:border-stone-500 "
+                placeholder="Add firm"
+              />
+            </div>
+
+            <div className="mt-8">
+              <label className="block mb-3 font-medium  dark:text-gray-200">
+                Building Area
+              </label>
+              <input
+                {...register("square", { valueAsNumber: true })}
+                type="number"
+                className="w-full py-2  px-4  rounded-lg  focus:outline-none border transition-all 
+                     border-gray-300 focus:border-stone-500 "
+                placeholder="Add square"
+              />
+            </div>
+
+            <div className="mt-8">
+              <label className="block mb-3 font-medium dark:text-gray-200">
+                Tags
+              </label>
+
+              {watchedTags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {watchedTags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="flex items-center gap-1 px-3 py-1 bg-[#252525] text-white text-sm rounded-full"
+                    >
+                      #{tag}
+                      <button
+                        type="button"
+                        onClick={() => onRemoveTag(tag)}
+                        className="ml-1 hover:text-gray-300 transition"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <input
+                value={tagInput}
+                onKeyDown={onAddTag}
+                onChange={(e) => onTagInputChange(e.target.value)}
+                type="text"
+                disabled={watchedTags.length >= 10}
+                className="w-full py-2 px-4 rounded-lg focus:outline-none border transition-all
+               border-gray-300 focus:border-stone-500 disabled:opacity-50"
+                placeholder={
+                  watchedTags.length >= 10
+                    ? "Maximum 10 tags"
+                    : "Add tag and press Enter"
+                }
+              />
+              <p className="text-xs text-gray-400 mt-1">
+                Press Enter or comma to add • {watchedTags.length}/10
+              </p>
             </div>
 
             <div className="mt-8 sm:mt-10 lg:mt-15 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between">

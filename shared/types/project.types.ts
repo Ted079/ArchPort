@@ -16,11 +16,14 @@ export interface IProject {
   _id: string;
   title: string;
   description: string;
-  location: string;
+  location?: string;
   images: string[];
   category?: ProjectCategory;
   author: IUser;
   views: number;
+  square?: number;
+  firm?: string;
+  tags?: string[];
   // likes: string[],
 
   createdAt: Date;
@@ -32,7 +35,8 @@ export interface CreateProjectDTO {
   description: string;
   images: string[];
   category: ProjectCategory;
-  location: string;
+  location?: string;
+  square?: number;
+  firm?: string;
+  tags?: string[];
 }
-
-

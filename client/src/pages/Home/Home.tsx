@@ -18,7 +18,7 @@ const Home = () => {
       <Hero items={items}/>
       <UploadProjectSection/>
       <CategoriesList />
-      <ProjectList mode="home" items={items} />
+      <ProjectList items={items} showLoadMore={true}/>
     </div>
   );
 };

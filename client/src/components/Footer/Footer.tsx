@@ -3,8 +3,7 @@ import { Logo } from "../UI/Logo";
 const Footer = () => {
   return (
     <>
-      <footer className="bg-white dark:bg-gray-900">
-        <div className="container p-16 mx-auto ">
+        <div className="container py-10 px-16 mx-auto ">
           <div className="flex flex-col items-center justify-between lg:flex-row">
             <Logo />
 
@@ -51,7 +50,7 @@ const Footer = () => {
               </a>
             </div>
 
-            <div className="flex mt-6 -mx-2">
+            <div className="flex mt-1 -mx-2">
               <a
                 href="#"
                 className="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
@@ -99,9 +98,9 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex flex-col items-center sm:flex-row sm:justify-between my-10">
+          <div className="flex flex-col items-center sm:flex-row sm:justify-between mt-15 mb-4">
             <p className="text-sm text-gray-500">
-              © Copyright 2021. All Rights Reserved.
+              © Copyright 2026. All Rights Reserved.
             </p>
 
             <div className="flex mt-3 -mx-2 sm:mt-0">
@@ -134,7 +133,6 @@ const Footer = () => {
             </div>
           </div>
         </div>
-      </footer>
     </>
   );
 };

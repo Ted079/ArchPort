@@ -23,8 +23,8 @@ const Edit = () => {
     isLoading: isFetching,
     error,
   } = useGetOneProjectQuery(id!);
-  const [currentImg, setCurrentImg] = useState<string[]>(project?.images || []); // !
-  const [newFiles, setNewFiles] = useState<File[]>([]); // !
+  const [currentImg, setCurrentImg] = useState<string[]>(project?.images || []);
+  const [newFiles, setNewFiles] = useState<File[]>([]);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -36,18 +36,25 @@ const Edit = () => {
       category: project?.category || ProjectCategory.ARCHITECTURE,
       images: undefined,
       location: project?.location || "",
-
+      firm: project?.firm || "",
+      square: project?.square || 0,
+      tags: project?.tags || [],
     },
   });
+
+  const [tagInput, setTagInput] = useState("");
+  const watchedTags = form.watch("tags") || [];
 
   useEffect(() => {
     if (project) {
       form.setValue("title", project.title);
       form.setValue("description", project.description);
       form.setValue("category", project.category as string);
-      setCurrentImg(project.images);
       form.setValue("location", project.location);
-
+      form.setValue("firm", project.firm ?? "");
+      form.setValue("square", project.square ?? 0);
+      form.setValue("tags", project.tags ?? []);
+      setCurrentImg(project.images);
     }
   }, [project, form.setValue]);
 
@@ -97,6 +104,9 @@ const Edit = () => {
         description: formOutput.description,
         category: formOutput.category as ProjectCategory,
         location: formOutput.location,
+        firm: formOutput.firm,
+        square: formOutput.square,
+        tags: formOutput.tags,
       };
 
       if (imagesActuallyChanged && newFiles.length === 0) {
@@ -109,6 +119,24 @@ const Edit = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" || e.key === ",") {
+      const tag = tagInput.trim().toLowerCase();
+      e.preventDefault();
+      if (tag && !watchedTags.includes(tag) && watchedTags.length < 10) {
+        form.setValue("tags", [...watchedTags, tag]);
+      }
+      setTagInput("");
+    }
+  };
+
+  const handleTagRemoe = (tag: string) => {
+    form.setValue(
+      "tags",
+      watchedTags.filter((t) => t !== tag),
+    );
   };
 
   if (!project) return <div>Loading...</div>;
@@ -125,6 +153,10 @@ const Edit = () => {
         title="Edit"
         onRemoveCurrentImage={removeCurrentImage}
         onRemoveNewFile={removeNewFile}
+        tagInput={tagInput}
+        onTagInputChange={setTagInput}
+        onAddTag={handleAddTag}
+        onRemoveTag={handleTagRemoe}
       />
     </>
   );

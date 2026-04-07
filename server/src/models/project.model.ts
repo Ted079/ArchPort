@@ -18,6 +18,18 @@ const ProjectSchema = new Schema<IProject>(
     location: {
       type: String,
     },
+    square: {
+      type: Number,
+    },
+    firm: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    tags: {
+      type: [String],
+      default: [],
+    },
     images: {
       type: [String],
     },
@@ -43,6 +55,7 @@ const ProjectSchema = new Schema<IProject>(
 
 ProjectSchema.index({ title: "text", description: "text" });
 ProjectSchema.index({ category: 1, createdAt: -1 });
+ProjectSchema.index({ tags: 1});
 
 const Project = model("Project", ProjectSchema);
 export default Project;
