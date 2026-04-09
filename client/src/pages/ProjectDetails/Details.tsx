@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetOneProjectQuery } from "../../store/api/projectSlice";
 import Button from "../../components/UI/Button";
-import Images from "./Images";
+import ImagesCard from "../../components/Image/ImagesCard";
 import { Link } from "react-router-dom";
 import { EditIcon } from "../../components/UI/icons";
 import { useAppDispatch, useAppSelector } from "../../store";
@@ -53,10 +53,8 @@ const Details = () => {
     }
   };
 
-  // UseClickOutside(ref, () => setOpen(false));
-
   return (
-    <section className="bg-white">
+    <section className="bg-gray-100">
       <div className="max-w-full lg:max-w-5xl px-3 sm:px-6 sm:py-10 mx-auto  ">
         <div className="flex gap-5 justify-between">
           <h1 className="">
@@ -105,16 +103,12 @@ const Details = () => {
 
         <div className="py-4 mx-auto">
           <div className="">
-            <div className="">
-              <Images images={project?.images} />
-            </div>
-
+            <ImagesCard images={project?.images} id={id} />
             <div className="mt-2 flex flex-col  p-12 mt-6 lg:gap-6 lg:mt-0">
               <h1 className="max-w-lg mt-12 mb-6 text-3xl font-semibold leading-tight text-gray-800">
                 More about this product
               </h1>
               <div className="mb-6">
-                {/* <h3 className="text-amber-500 capitalize">Description</h3> */}
                 <p className="block mt-2  text-gray-700  text-xl/8 ">
                   {project?.description}
                 </p>
@@ -184,9 +178,8 @@ const Details = () => {
               </div>
             </div>
             {/* <Images images={project?.images} /> */}
-
             {/* {project?.images.map((i) => (
-              <div className="w-full h-[650px] flex items-center justify-center overflow-hidden  gap-4 mt-5">
+              <div className="w-full h-[550px] flex items-center justify-center overflow-hidden  gap-4 mt-5">
                 <img
                   src={i}
                   alt="images"
@@ -194,7 +187,6 @@ const Details = () => {
                 />
               </div>
             ))} */}
-
             <div className="flex flex-col items-center justify-center mt-8 w-full">
               <div className="flex items-center w-full mb-4">
                 <div className="flex-1 h-px bg-gray-200"></div>
@@ -231,14 +223,16 @@ const Details = () => {
                 Get in touch
               </Button>
             </div>
-
             {authorItems.length > 2 && (
               <>
                 <div className="flex justify-between">
                   <p className="max-w-lg mt-8 font-bold  text-gray-800 ">
                     More by {project?.author.name}
                   </p>
-                  <Link to={ROUTES.PROFILE} className="max-w-lg  mt-8 text-sm  text-gray-600 ">
+                  <Link
+                    to={ROUTES.PROFILE}
+                    className="max-w-lg  mt-8 text-sm  text-gray-600 "
+                  >
                     View profile
                   </Link>
                 </div>
@@ -251,9 +245,7 @@ const Details = () => {
                 />
               </>
             )}
-
             <div className="flex-1 h-px bg-gray-300  my-15"></div>
-
             <p className="max-w-lg mt-8 font-bold  text-gray-800 ">
               You migth like also
             </p>

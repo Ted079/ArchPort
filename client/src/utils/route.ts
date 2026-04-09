@@ -1,19 +1,18 @@
 export const ROUTES = {
-    HOME: "/",
-    LOGIN: "/singin",
-    SIGNUP: "/singup",
+  HOME: "/",
+  LOGIN: "/singin",
+  SIGNUP: "/singup",
 
+  CATEGORY: "/categories/:id",
+  NOTFOUND: "/notFound",
+  TERMS: "/terms",
 
-    CATEGORY: "/categories/:id",
-    NOTFOUND: "/notFound",
-    TERMS: "/terms",
+  PROFILE: "/profile",
+  PROFILE_SETTINGS: "/profile/settings",
+  PROFILE_CREATE: "/profile/create",
 
-    PROFILE: "/profile",
-    PROFILESETTINGS: "/profile/settings",
-    PROFILECREATE: "/profile/create",
-
-    UPLOADPROJECT: "/uploads",
-    PROJECTDETAILS: "/details/:id",
-    EDTIPROJECT: "/uploads/:id/edit",
-    
+  PROJECT_CREATE: "/uploads",
+  PROJECT_DETAILS: "/details/:id",
+  PROJECT_EDIT: "/projects/:id/edit", 
+  PROJECT_IMAGES: "/projects/:id/images",
 };

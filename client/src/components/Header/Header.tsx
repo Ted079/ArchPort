@@ -76,7 +76,7 @@ const Header = () => {
         <div className="flex flex-row items-center space-x-4 ">
           {isAuthenticated && (
             <Button
-              onClick={() => navigate(ROUTES.UPLOADPROJECT)}
+              onClick={() => navigate(ROUTES.PROFILE_CREATE)}
               size="sm"
               variant="outline"
               icon={<UploadIcon />}

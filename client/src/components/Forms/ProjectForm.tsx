@@ -3,7 +3,7 @@ import type { UseFormReturn } from "react-hook-form";
 import type { CreateProjectFormInput } from "../../../../shared/validators/createProject.validators";
 import { ProjectCategory } from "../../../../shared/types";
 import Button from "../UI/Button";
-import ImagePreview from "../ImagePreview/ImagePreview";
+import ImagePreview from "../Image/ImagePreview";
 import { ImagesIcon } from "../UI/icons/ImagesIcon";
 import { useNavigate } from "react-router-dom";
 import { BackIcon } from "../UI/icons/BackIcon";

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import type { CardHeight } from "../../../../shared/types/ui.types";
 import { ViewIcon } from "../UI/icons/ViewIcon";
 import { LikeIcon } from "../UI/icons/LikeIcon";
@@ -32,6 +32,18 @@ const ProjectsCard = ({
   showView,
   cardHeight = "sm",
 }: ProjectsCardProsps) => {
+
+  
+  // const navigate = useNavigate();
+  // const location = useLocation();
+
+  // const handleClick = () => {
+  //   navigate(`/details/${_id}`, {
+  //     state: { background: location }, 
+  //   })
+  // };
+
+
   return (
     <Link to={`/details/${_id}`}>
       <div
