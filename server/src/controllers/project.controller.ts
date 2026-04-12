@@ -37,7 +37,7 @@ export const createProject = async (req: Request, res: Response) => {
 
 export const getAllProjects = async (req: Request, res: Response) => {
   try {
-    const { authorId } = req.query;
+    const { authorId, category } = req.query;
 
     const filter: any = {};
 
@@ -45,9 +45,14 @@ export const getAllProjects = async (req: Request, res: Response) => {
       filter.author = authorId;
     }
 
+    if(category){
+      filter.category = category;
+    };
+
     const projects = await Project.find(filter)
       .populate("author")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .lean();
 
     res.status(200).json(projects);
   } catch (error) {

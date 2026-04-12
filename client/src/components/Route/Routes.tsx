@@ -12,6 +12,7 @@ import Details from "../../pages/ProjectDetails/Details";
 import Setting from "../../pages/Profile/Setting";
 import ProjectGallery from "../../pages/ProjectImages/ProjectGallery";
 import DetailsModal from "../DetailsModal/DetailsModal";
+import SingleCategory from "../../pages/SingleCategory/SingleCategory";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -25,6 +26,7 @@ const AppRoutes = () => {
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path={ROUTES.PROJECT_DETAILS} element={<Details />} />
+          <Route path={ROUTES.CATEGORY} element={<SingleCategory />} />
           <Route element={<PrivateRoute />}>
             <Route path={ROUTES.PROFILE} element={<Profile />} />
             <Route path={ROUTES.PROFILE_SETTINGS} element={<Setting />} />
@@ -34,9 +36,6 @@ const AppRoutes = () => {
         <Route path={ROUTES.LOGIN} element={<Login />} />
         <Route path={ROUTES.SIGNUP} element={<Signup />} />
       </Routes>
-
-
-
 
       {/* {background && (
         <Routes>

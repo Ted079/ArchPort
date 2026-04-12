@@ -3,7 +3,7 @@ export const ROUTES = {
   LOGIN: "/singin",
   SIGNUP: "/singup",
 
-  CATEGORY: "/categories/:id",
+  CATEGORY: "/categories/:category",
   NOTFOUND: "/notFound",
   TERMS: "/terms",
 

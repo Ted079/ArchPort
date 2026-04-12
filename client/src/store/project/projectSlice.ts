@@ -26,13 +26,30 @@ export const getProjects = createAsyncThunk<
   }
 });
 
+export const getProjByCat = createAsyncThunk<
+  IProject[],
+  string | undefined,
+  { rejectValue: string }
+>("category/getProjects", async (category, thunkAPI) => {
+  try {
+    const res = await axios.get<IProject[]>(
+      `${BASE_URL}/projects?category=${category}`,
+    );
+    return res.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue("Server error");
+  }
+});
+
 export const getAuthorProjects = createAsyncThunk<
   IProject[],
   string | undefined,
   { rejectValue: string }
 >("project/authorProject", async (authorId, thunkAPI) => {
   try {
-    const res = await axios.get<IProject[]>(`${BASE_URL}/projects?authorId=${authorId}`);
+    const res = await axios.get<IProject[]>(
+      `${BASE_URL}/projects?authorId=${authorId}`,
+    );
     return res.data;
   } catch (error: any) {
     return thunkAPI.rejectWithValue("Server error");
@@ -155,6 +172,8 @@ interface ProjectState {
   isUploading: boolean;
   error: null | string;
   currentProj: IProject | null;
+
+  categoryItems: IProject[];
 }
 
 const initialState: ProjectState = {
@@ -164,6 +183,8 @@ const initialState: ProjectState = {
   isUploading: false,
   error: null,
   currentProj: null,
+
+  categoryItems: [],
 };
 
 const projectSlice = createSlice({
@@ -187,7 +208,6 @@ const projectSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload || "Server Err";
       })
-
 
       .addCase(getAuthorProjects.pending, (state) => {
         state.isLoading = true;
@@ -270,6 +290,19 @@ const projectSlice = createSlice({
       .addCase(deleteProj.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || "Deleted failed";
+      })
+
+      // ------------------------------
+      .addCase(getProjByCat.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getProjByCat.fulfilled, (state, action: PayloadAction<IProject[]>) => {
+        state.isLoading = false;
+        state.categoryItems = action.payload;
+      })
+      .addCase(getProjByCat.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || "Can not get Project by cat"
       });
   },
 });
