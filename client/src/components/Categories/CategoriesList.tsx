@@ -1,6 +1,5 @@
-import React from "react";
 import SortDropdown from "../UI/SortDropdown";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CATEGRIES = [
   {
@@ -44,5 +43,3 @@ const CategoriesList = () => {
 };
 
 export default CategoriesList;
-
-// Используй query параметры в уже существующем getAllProjects.

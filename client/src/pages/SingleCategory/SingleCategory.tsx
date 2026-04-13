@@ -1,22 +1,20 @@
-import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../store";
-import { getProjByCat } from "../../store/project/projectSlice";
+import { useParams } from "react-router-dom";
 import ProjectList from "../../components/Project/ProjectList";
+import { useGetProjectByCategoryQuery } from "../../store/api/projectSlice";
 
 const SingleCategory = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { category } = useParams();
   console.log(category);
-  const { categoryItems, isLoading } = useAppSelector((state) => state.project);
+  const {
+    data: categoryItems = [],
+    isLoading,
+    isError,
+  } = useGetProjectByCategoryQuery(category!, {
+    skip: !category,
+  });
 
-  useEffect(() => {
-    if (category) {
-      dispatch(getProjByCat(category));
-    }
-  }, [dispatch]);
-  if (isLoading) return "Loading";
+  if (isError) return <div>Server Error</div>;
+  if (isLoading) return <div>Loading</div>;
 
   return (
     <>
