@@ -10,8 +10,18 @@ import type {
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 
+interface ProjectsResponse {
+  projects: IProject[];
+  pagination: {
+    total: number;
+    page: number;
+    pages: number;
+    limit: number;
+  };
+}
+
 export const getProjects = createAsyncThunk<
-  IProject[],
+  ProjectsResponse,
   string | undefined, // authorId
   { rejectValue: string }
 >("project/getProjects", async (authorId, thunkAPI) => {
@@ -22,21 +32,6 @@ export const getProjects = createAsyncThunk<
     const res = await axios.get<IProject[]>(url);
     return res.data;
   } catch (error) {
-    return thunkAPI.rejectWithValue("Server error");
-  }
-});
-
-export const getProjByCat = createAsyncThunk<
-  IProject[],
-  string | undefined,
-  { rejectValue: string }
->("category/getProjects", async (category, thunkAPI) => {
-  try {
-    const res = await axios.get<IProject[]>(
-      `${BASE_URL}/projects?category=${category}`,
-    );
-    return res.data;
-  } catch (error: any) {
     return thunkAPI.rejectWithValue("Server error");
   }
 });
@@ -198,15 +193,16 @@ const projectSlice = createSlice({
       })
       .addCase(
         getProjects.fulfilled,
-        (state, action: PayloadAction<IProject[]>) => {
+        (state, action: PayloadAction<ProjectsResponse>) => {
           state.isLoading = false;
-          state.items = action.payload;
+          state.items = action.payload.projects;
         },
       )
 
-      .addCase(getProjects.rejected, (state, action) => {
+      .addCase(getProjects.rejected, (state) => {
         state.isLoading = false;
-        state.error = action.payload || "Server Err";
+        // state.error = action.payload.projects || "server er"
+        // state.error = action.payload.projects || "Server Err";
       })
 
       .addCase(getAuthorProjects.pending, (state) => {
@@ -290,19 +286,6 @@ const projectSlice = createSlice({
       .addCase(deleteProj.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || "Deleted failed";
-      })
-
-      // ------------------------------
-      .addCase(getProjByCat.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getProjByCat.fulfilled, (state, action: PayloadAction<IProject[]>) => {
-        state.isLoading = false;
-        state.categoryItems = action.payload;
-      })
-      .addCase(getProjByCat.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload || "Can not get Project by cat"
       });
   },
 });

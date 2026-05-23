@@ -8,7 +8,6 @@ import {
   Description,
 } from "@headlessui/react";
 
-type ModalVariant = "" | "";
 
 interface ModalProps {
   className?: string;
@@ -24,7 +23,6 @@ interface ModalProps {
 
 const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
   ({
-    className = "",
     icon,
     title,
     description,

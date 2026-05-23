@@ -1,23 +1,30 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import ProjectList from "../../components/Project/ProjectList";
-import { useGetProjectByCategoryQuery } from "../../store/api/projectSlice";
+import { useGetProjectsWithFiltersQuery } from "../../store/api/projectSlice";
+import CategoriesList from "../../components/Categories/CategoriesList";
 
 const SingleCategory = () => {
   const { category } = useParams();
-  console.log(category);
-  const {
-    data: categoryItems = [],
-    isLoading,
-    isError,
-  } = useGetProjectByCategoryQuery(category!, {
-    skip: !category,
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sort = searchParams.get("sort") ?? "-views";
+
+  const { data, isLoading, isError } = useGetProjectsWithFiltersQuery({
+    category: category,
+    sort: sort,
   });
+
+  const handleSortChange = (value: string) => {
+    setSearchParams({ sort: value ?? "-views" });
+  };
+
+  const categoryItems = data?.projects ?? [];
 
   if (isError) return <div>Server Error</div>;
   if (isLoading) return <div>Loading</div>;
 
   return (
     <>
+      <CategoriesList sort={sort} onSortChange={handleSortChange} />
       <ProjectList items={categoryItems} />
     </>
   );

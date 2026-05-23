@@ -2,13 +2,12 @@ import type { IProject } from "../../../../shared/types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
+import SearchBar from "../SeacrhForm/SearchForm";
 
 interface HeroProps {
   items: IProject[];
 }
 const Hero = ({ items }: HeroProps) => {
-  console.log(items);
-
   return (
     <>
       <div className="max-w-full  flex flex-col px-16 sm:py-10 mx-auto space-y-6 lg:h-[26rem] lg:py-16 lg:flex-row lg:items-center ">
@@ -23,6 +22,12 @@ const Hero = ({ items }: HeroProps) => {
               specializing in architecture, interiors, and visual design — and
               find the right expert for your next idea.
             </p>
+
+            <div className="mt-10">
+              
+              <SearchBar  />
+              {/* <Example1 children="all due my respect"/> */}
+            </div>
           </div>
         </div>
 
@@ -33,7 +38,6 @@ const Hero = ({ items }: HeroProps) => {
             slidesPerView={1}
             centeredSlides={true}
             breakpoints={{
-             
               1024: {
                 slidesPerView: 1,
                 spaceBetween: 45,

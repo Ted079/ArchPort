@@ -4,6 +4,7 @@ export const ROUTES = {
   SIGNUP: "/singup",
 
   CATEGORY: "/categories/:category",
+  SEARCH: "/search",
   NOTFOUND: "/notFound",
   TERMS: "/terms",
 

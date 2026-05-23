@@ -1,10 +1,22 @@
 import { useRef, useState } from "react";
 import { UseClickOutside } from "../../hooks/UseClickOutside";
 
-const SortDropdown = () => {
+interface SortDropdownProps {
+  sortValue: string;
+  onChange: (value: string) => void;
+}
+
+const SortDropdown = ({ sortValue, onChange }: SortDropdownProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selected, setSelected] = useState<string>("Following");
-  const options = ["Following", "Popular", "New"];
+  const options = [
+    { label: "Popular", value: "-views" },
+    { label: "Newest", value: "-createdAt" },
+    { label: "Oldest", value: "createdAt" },
+  ];
+
+  const selected =
+    options.find((o) => o.value === sortValue)?.label ?? "Popular";
+
   const ref = useRef<HTMLDivElement>(null);
 
   UseClickOutside(ref, () => setIsOpen(false));
@@ -15,6 +27,7 @@ const SortDropdown = () => {
         className="flex items-center justify-between min-w-[140px] px-4 py-2 text-sm font-medium border border-gray-200 rounded-xl hover:bg-gray-50 focus:outline-none"
       >
         <span>{selected}</span>
+
         <svg
           className={`w-4 h-4 ml-2 transition-transform ${isOpen ? "rotate-180" : ""}`}
           fill="none"
@@ -30,7 +43,6 @@ const SortDropdown = () => {
         </svg>
       </button>
 
-
       {isOpen && (
         <div
           ref={ref}
@@ -38,17 +50,17 @@ const SortDropdown = () => {
         >
           {options.map((option) => (
             <button
-              key={option}
+              key={option.value}
               onClick={() => {
                 setIsOpen(false);
-                setSelected(option);
+                onChange(option.value);
               }}
               className={`flex items-center justify-between w-full px-4 py-3 text-sm rounded-xl transition-colors
-                ${selected === option ? "bg-gray-100 " : "hover:bg-gray-50"}`}
+                ${selected === option.label ? "bg-gray-100 " : "hover:bg-gray-50"}`}
             >
-              {option}
+              {option.label}
 
-              {selected === option && (
+              {selected === option.label && (
                 <svg
                   className="w-4 h-4 text-gray-900"
                   fill="none"

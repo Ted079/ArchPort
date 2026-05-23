@@ -1,24 +1,26 @@
-import { useEffect } from "react";
 import Hero from "../../components/Header/Hero";
-import { useAppDispatch, useAppSelector } from "../../store";
-import { getProjects } from "../../store/project/projectSlice";
 import CategoriesList from "../../components/Categories/CategoriesList";
 import ProjectList from "../../components/Project/ProjectList";
 import UploadProjectSection from "../../components/Header/UploadProjectSection";
+import { useGetProjectsWithFiltersQuery } from "../../store/api/projectSlice";
 
 const Home = () => {
-  const dispacth = useAppDispatch();
-  const { items } = useAppSelector((state) => state.project);
+  const { data, isError, isLoading } = useGetProjectsWithFiltersQuery({
+    sort: "-views",
+  });
 
-  useEffect(() => {
-    dispacth(getProjects());
-  }, [dispacth]);
+  const items = data?.projects ?? [];
+
+  if (isError) {
+    return <div>Error..</div>;
+  }
+
   return (
     <div>
-      <Hero items={items}/>
-      <UploadProjectSection/>
+      <Hero items={items} />
+      <UploadProjectSection />
       <CategoriesList />
-      <ProjectList items={items} showLoadMore={true}/>
+      <ProjectList items={items} showLoadMore={true} isLoading={isLoading} />
     </div>
   );
 };

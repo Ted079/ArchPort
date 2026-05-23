@@ -13,6 +13,7 @@ import Setting from "../../pages/Profile/Setting";
 import ProjectGallery from "../../pages/ProjectImages/ProjectGallery";
 import DetailsModal from "../DetailsModal/DetailsModal";
 import SingleCategory from "../../pages/SingleCategory/SingleCategory";
+import SearchPage from "../../pages/Search/SearchPage";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -27,6 +28,7 @@ const AppRoutes = () => {
           <Route index element={<Home />} />
           <Route path={ROUTES.PROJECT_DETAILS} element={<Details />} />
           <Route path={ROUTES.CATEGORY} element={<SingleCategory />} />
+          <Route path={ROUTES.SEARCH} element={<SearchPage />} />
           <Route element={<PrivateRoute />}>
             <Route path={ROUTES.PROFILE} element={<Profile />} />
             <Route path={ROUTES.PROFILE_SETTINGS} element={<Setting />} />

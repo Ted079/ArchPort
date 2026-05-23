@@ -15,8 +15,16 @@ export const createProject = async (req: Request, res: Response) => {
       });
     }
 
-    const { title, description, images, category, location, square, firm, tags }: CreateProjectDTO =
-      req.body;
+    const {
+      title,
+      description,
+      images,
+      category,
+      location,
+      square,
+      firm,
+      tags,
+    }: CreateProjectDTO = req.body;
     const project = await Project.create({
       title,
       description,
@@ -37,7 +45,15 @@ export const createProject = async (req: Request, res: Response) => {
 
 export const getAllProjects = async (req: Request, res: Response) => {
   try {
-    const { authorId, category } = req.query;
+    const {
+      authorId,
+      category,
+      tags,
+      search,
+      sort = "-createdAt",
+      page = 1,
+      limit = 12,
+    } = req.query;
 
     const filter: any = {};
 
@@ -45,20 +61,53 @@ export const getAllProjects = async (req: Request, res: Response) => {
       filter.author = authorId;
     }
 
-    if(category){
+    if (category) {
       filter.category = category;
-    };
+    }
+
+    if (tags) {
+      const tagsArray = (tags as string).split(",");
+      filter.tags = { $in: tagsArray };
+    }
+
+    if (search) {
+      filter.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    //     $regex → поиск по подстроке
+    // $options: 'i' → ignore case (без учёта регистра)
+    // 1. Поиск = $regex
+    // 2. Поиск по нескольким полям = $or
+
+    const total = await Project.countDocuments(filter);
+    //pagination
+    const pageNum = parseInt(page as string);
+    const limitNum = parseInt(limit as string);
+    const skip = (pageNum - 1) * limitNum;
 
     const projects = await Project.find(filter)
       .populate("author")
-      .sort({ createdAt: -1 })
+      .sort(sort as string)
+      .skip(skip)
+      .limit(limitNum)
       .lean();
 
-    res.status(200).json(projects);
+    res.status(200).json({
+      projects,
+      pagination: {
+        total,
+        page: pageNum,
+        pages: Math.ceil(total / limitNum),
+        limit: limitNum,
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
-}; // дописать для поиска и филтрации..
+};
 
 export const getProjectById = async (req: Request, res: Response) => {
   try {
@@ -87,7 +136,8 @@ export const deleteProject = async (req: Request, res: Response) => {
     }
 
     res.json({
-      success: true, project
+      success: true,
+      project,
     });
   } catch (error) {
     res.status(500).json({ message: "Cannot delete project" });
@@ -97,8 +147,16 @@ export const deleteProject = async (req: Request, res: Response) => {
 export const updateProject = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { title, description, images, category, location ,square, firm, tags }: CreateProjectDTO =
-      req.body;
+    const {
+      title,
+      description,
+      images,
+      category,
+      location,
+      square,
+      firm,
+      tags,
+    }: CreateProjectDTO = req.body;
     const project = await Project.findByIdAndUpdate(
       id,
       {
@@ -191,4 +249,3 @@ export const uploadImagesRoute = async (req: Request, res: Response) => {
   }
 };
 
-//delete image from proj

@@ -8,6 +8,7 @@ import { UploadIcon } from "../UI/icons";
 import { CloseIcon } from "../UI/icons/CloseIcon";
 import { BurgerIcon } from "../UI/icons/BurgerIcon";
 import { Logo } from "../UI/Logo";
+import Example from "../SeacrhForm/SearchForm";
 
 const Header = () => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
@@ -71,6 +72,12 @@ const Header = () => {
               </Link>
             </div>
           </nav>
+        </div>
+
+        <div className="">
+
+          <Example children="What are you looking for"/>
+
         </div>
 
         <div className="flex flex-row items-center space-x-4 ">

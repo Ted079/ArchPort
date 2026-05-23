@@ -1,41 +1,75 @@
+import { CATEGRIES } from "../../utils/constants";
 import SortDropdown from "../UI/SortDropdown";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const CATEGRIES = [
-  {
-    id: 1,
-    value: "",
-    label: "All",
-  },
-  { id: 2, value: "architecture", label: "Architecture" },
-  { id: 3, value: "interior", label: "Interior" },
-  { id: 4, value: "landscape", label: "Landscape" },
-  { id: 5, value: "urban", label: "Urban" },
-  { id: 6, value: "industrial", label: "Industrial" },
-  { id: 7, value: "renovation", label: "Renovation" },
-  { id: 8, value: "conceptual", label: "Conceptual" },
-  { id: 10, value: "residential", label: "Residential" },
-  { id: 10, value: "commercial", label: "Commercial" },
-];
+interface CategoriesListProps {
+  onCategorySelect?: (category: string | null) => void;
+  activeCategory?: string | null;
 
-const CategoriesList = () => {
+  sort?: string;
+  onSortChange?: (value: string | null) => void;
+}
+
+const CategoriesList = ({
+  onCategorySelect,
+  activeCategory,
+  sort = "-createdAt",
+  onSortChange,
+}: CategoriesListProps) => {
   const navigate = useNavigate();
+  const { category } = useParams();
+  const selectCategory = activeCategory ?? category;
+
+  const handleSortChange = (value: string) => {
+    const isMainPage = location.pathname === "/";
+    if (isMainPage) {
+      navigate(`/categories/sort=${value}`);
+    } else {
+      onSortChange?.(value);
+    }
+  };
+
   return (
     <div className="max-w-full px-16  py-4">
-      <div className="bg-[#f8f8fc] lg:flex lg:items-center justify-between cursor-pointer border border-[#f8f8fc] rounded-3xl flex  flex-col md:flex-row gap-3 sm:gap-4 p-5  shadow-xs">
+      <div className=" lg:flex lg:items-center flex justify-between cursor-pointer  rounded-3xl   flex-col md:flex-row gap-3 sm:gap-4 p-5  ">
         <div className="flex">
-          <SortDropdown />
+          <SortDropdown
+            sortValue={sort}
+            // onChange={(value) => onSortChange?.(value)}
+            onChange={handleSortChange}
+          />
         </div>
         <div className="flex overflow-x-auto overflow-y-hidden md:justify-center">
-          {CATEGRIES.map((category) => (
-            <button
-              onClick={() => navigate(`/categories/${category.value}`)}
-              key={category.value}
-              className="h-12 px-8 py-2 text-sm text-center   font-semibold bg-transparent   sm:text-sm  whitespace-nowrap focus:outline-none"
-            >
-              {category.label}
-            </button>
-          ))}
+          {CATEGRIES.map((categoryName) => {
+            const isActive =
+              selectCategory?.toLowerCase() ===
+              categoryName.value.toLowerCase();
+            return (
+              <button
+                key={categoryName.value}
+                onClick={() => {
+                  const newValue = isActive ? null : categoryName.value;
+
+                  if (activeCategory !== undefined) {
+                    onCategorySelect?.(newValue);
+                  } else {
+                    const targetPath = isActive
+                      ? "/categories"
+                      : `/categories/${categoryName.value}`;
+                    navigate(targetPath);
+                  }
+                }}
+                className={`h-8 px-6 py-2 text-sm font-semibold rounded-full transition-all 
+              ${
+                isActive
+                  ? "bg-neutral-200  shadow-lg"
+                  : "bg-transparent hover:text-gray-500"
+              }`}
+              >
+                {categoryName.label}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

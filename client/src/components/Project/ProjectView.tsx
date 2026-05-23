@@ -38,7 +38,6 @@ const ProjectView = ({
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  console.log(tags);
 
   const handleDelete = async () => {
     try {
@@ -64,7 +63,7 @@ const ProjectView = ({
               size="sm"
               className=""
               variant="forIcons"
-              onClick={() => navigate(`/uploads/${id}/edit`)}
+              onClick={() => navigate(`/projects/${id}/edit`)}
               icon={<EditIcon />}
             />
 
