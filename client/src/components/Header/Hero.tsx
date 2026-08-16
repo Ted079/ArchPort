@@ -1,13 +1,17 @@
 import type { IProject } from "../../../../shared/types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import "swiper/css";
+// import "swiper/css";
 import SearchBar from "../SeacrhForm/SearchForm";
+import { Link } from "react-router-dom";
 
 interface HeroProps {
   items: IProject[];
 }
 const Hero = ({ items }: HeroProps) => {
+  const sliceItems = items.slice(0, 4);
+  console.log(sliceItems);
+
   return (
     <>
       <div className="max-w-full  flex flex-col px-16 sm:py-10 mx-auto space-y-6 lg:h-[26rem] lg:py-16 lg:flex-row lg:items-center ">
@@ -24,9 +28,7 @@ const Hero = ({ items }: HeroProps) => {
             </p>
 
             <div className="mt-10">
-              
-              <SearchBar  />
-              {/* <Example1 children="all due my respect"/> */}
+              <SearchBar />
             </div>
           </div>
         </div>
@@ -53,27 +55,17 @@ const Hero = ({ items }: HeroProps) => {
             speed={700}
             modules={[Autoplay]}
           >
-            {/* <SwiperSlide className="object-cover w-full h-full max-w-xl rounded-3xl">
-              <img
-                className="object-cover w-full h-full max-w-xl rounded-3xl"
-                src="https://w.wallhaven.cc/full/ne/wallhaven-ne5dxw.jpg"
-                alt="glasses photo"
-              />
-            </SwiperSlide> */}
-            <SwiperSlide>
-              <img
-                className="object-cover w-full h-full max-w-xl rounded-3xl"
-                src="https://w.wallhaven.cc/full/mp/wallhaven-mpyxky.jpg"
-                alt="glasses photo2"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                className="object-cover w-full h-full max-w-xl rounded-3xl"
-                src="https://w.wallhaven.cc/full/q2/wallhaven-q2vp9l.jpg"
-                alt="glasses photo3"
-              />
-            </SwiperSlide>
+            {sliceItems.map((item) => (
+              <SwiperSlide>
+                <Link to={`/details/${item._id}`}>
+                  <img
+                    className="object-cover w-full h-full max-w-xl rounded-3xl"
+                    src={item.images[0]}
+                    alt="glasses photo2"
+                  />
+                </Link>
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
       </div>

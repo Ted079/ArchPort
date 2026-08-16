@@ -1,6 +1,10 @@
 import { CATEGRIES } from "../../utils/constants";
 import SortDropdown from "../UI/SortDropdown";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Keyboard } from "swiper/modules";
+import "./CategoriesList.css";
+// import "swiper/css/navigation";
 
 interface CategoriesListProps {
   onCategorySelect?: (category: string | null) => void;
@@ -17,13 +21,15 @@ const CategoriesList = ({
   onSortChange,
 }: CategoriesListProps) => {
   const navigate = useNavigate();
-  const { category } = useParams();
-  const selectCategory = activeCategory ?? category;
+  const location = useLocation();
+  // const { category } = useParams();
+  // const selectCategory = activeCategory ?? category;
+  const selectCategory = activeCategory;
 
   const handleSortChange = (value: string) => {
     const isMainPage = location.pathname === "/";
     if (isMainPage) {
-      navigate(`/categories/sort=${value}`);
+      navigate(`/projects?sort=${value}`);
     } else {
       onSortChange?.(value);
     }
@@ -31,45 +37,81 @@ const CategoriesList = ({
 
   return (
     <div className="max-w-full px-16  py-4">
-      <div className=" lg:flex lg:items-center flex justify-between cursor-pointer  rounded-3xl   flex-col md:flex-row gap-3 sm:gap-4 p-5  ">
-        <div className="flex">
-          <SortDropdown
-            sortValue={sort}
-            // onChange={(value) => onSortChange?.(value)}
-            onChange={handleSortChange}
-          />
+      <div className=" lg:flex lg:items-center flex justify-between cursor-pointer  rounded-3xl flex-col md:flex-row gap-3 sm:gap-4 p-5  ">
+        <div className="flex shrink-0">
+          <SortDropdown sortValue={sort} onChange={handleSortChange} />
         </div>
-        <div className="flex overflow-x-auto overflow-y-hidden md:justify-center">
-          {CATEGRIES.map((categoryName) => {
-            const isActive =
-              selectCategory?.toLowerCase() ===
-              categoryName.value.toLowerCase();
-            return (
-              <button
-                key={categoryName.value}
-                onClick={() => {
-                  const newValue = isActive ? null : categoryName.value;
 
-                  if (activeCategory !== undefined) {
-                    onCategorySelect?.(newValue);
-                  } else {
-                    const targetPath = isActive
-                      ? "/categories"
-                      : `/categories/${categoryName.value}`;
-                    navigate(targetPath);
-                  }
-                }}
-                className={`h-8 px-6 py-2 text-sm font-semibold rounded-full transition-all 
+        <div className="flex items-center w-full gap-2 min-w-0">
+          <button
+            className="custom-prev swiper-button-disabled"
+            // onClick={() => swiperRef.current?.slidePrev()}
+          >
+            ❮
+          </button>
+
+          <div className="flex-1 min-w-0 overflow-hidden">
+            <Swiper
+              className="w-full "
+              slidesPerView="auto"
+              // spaceBetween={1}
+              navigation={{
+                prevEl: ".custom-prev",
+                nextEl: ".custom-next",
+              }}
+              modules={[Keyboard, Navigation]}
+
+              // centeredSlides={true}
+              // breakpoints={{
+              //   1024: {
+              //     slidesPerView: 1,
+              //     spaceBetween: 45,
+              //   },
+              //   1200: {
+              //     slidesPerView: 1,
+              //   },
+              // }}
+            >
+              {CATEGRIES.map((categoryName) => {
+                const isActive =
+                  selectCategory?.toLowerCase() ===
+                  categoryName.value.toLowerCase();
+                return (
+                  <SwiperSlide className="!w-auto" key={categoryName.value}>
+                    <button
+                      onClick={() => {
+                        const newValue = isActive ? null : categoryName.value;
+
+                        if (activeCategory !== undefined) {
+                          onCategorySelect?.(newValue);
+                        } else {
+                          const targetPath = isActive
+                            ? "/projects"
+                            : `/projects?category=${categoryName.value}`;
+                          navigate(targetPath);
+                        }
+                      }}
+                      className={`h-8 px-6  text-gray-900 text-sm font-semibold rounded-full transition-all 
               ${
                 isActive
-                  ? "bg-neutral-200  shadow-lg"
-                  : "bg-transparent hover:text-gray-500"
+                  ? "bg-neutral-200  "
+                  : "bg-transparent hover:text-gray-700"
               }`}
-              >
-                {categoryName.label}
-              </button>
-            );
-          })}
+                      // bg-transparent
+                    >
+                      {categoryName.label}
+                    </button>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </div>
+          <button
+            className="custom-next swiper-button-disabled"
+            // onClick={() => swiperRef.current?.slideNext()}
+          >
+            ❯
+          </button>
         </div>
       </div>
     </div>

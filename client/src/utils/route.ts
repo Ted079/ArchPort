@@ -3,10 +3,14 @@ export const ROUTES = {
   LOGIN: "/singin",
   SIGNUP: "/singup",
 
-  CATEGORY: "/categories/:category",
+  // CATEGORY: "/categories/:category",
   SEARCH: "/search",
+  PROJECTS: "/projects",
+
+
   NOTFOUND: "/notFound",
   TERMS: "/terms",
+  BLOGS: "/blogs",
 
   PROFILE: "/profile",
   PROFILE_SETTINGS: "/profile/settings",

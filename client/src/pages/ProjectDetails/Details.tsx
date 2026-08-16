@@ -17,13 +17,22 @@ const Details = () => {
   const dispatch = useAppDispatch();
 
   const { data: project, isLoading, error } = useGetOneProjectQuery(id!);
+
+
   const { items } = useAppSelector((state) => state.project);
+  
 
   const authorId = project?.author._id;
   const { data: authorItems = [] } = useGetProjectByAuthorQuery(authorId!, {
     skip: !authorId,
   });
 
+  console.log(authorItems.projects);
+  
+
+  
+  
+  
   useEffect(() => {
     dispatch(getProjects());
   }, [dispatch]);
@@ -62,7 +71,7 @@ const Details = () => {
         <p className="max-w-lg mt-8 font-bold  text-gray-800 ">
           You migth like also
         </p>
-        <ProjectList
+       {  <ProjectList
           items={items}
           limit={6}
           height="md"
@@ -71,7 +80,7 @@ const Details = () => {
           showTitle={true}
           showView={false}
           className="px-0 pb-0"
-        />
+        />}
       </div>
     </section>
   );

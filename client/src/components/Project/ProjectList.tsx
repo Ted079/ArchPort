@@ -16,7 +16,7 @@ const columnClasses: Record<GridColumns, string> = {
 
 interface ProjectsProps {
   items: IProject[];
-  isLoading: boolean;
+  isLoading?: boolean;
   limit?: number;
   column?: GridColumns;
   showAuthor?: boolean;

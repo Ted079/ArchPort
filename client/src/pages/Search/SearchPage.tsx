@@ -22,8 +22,6 @@ const SearchPage = () => {
     page: page,
   });
 
-  console.log(data?.pagination);
-  //  SearchPage.tsx:26 {total: 24, page: 1, pages: 2, limit: 12}
   const searchData = data?.projects ?? [];
 
   useEffect(() => {
@@ -94,5 +92,3 @@ const SearchPage = () => {
 };
 
 export default SearchPage;
-
-// cat ? { q: query ?? "", category: cat } : { q: query ?? "" },
