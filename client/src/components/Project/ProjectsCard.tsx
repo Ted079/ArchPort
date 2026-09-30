@@ -47,11 +47,14 @@ const ProjectsCard = ({
   return (
     <Link to={`/details/${_id}`}>
       <div
-        className={`overflow-hidden bg-cover rounded-lg cursor-pointer ${heightClasses[cardHeight]} group`}
-        style={{
-          backgroundImage: `url(${images[0]})`,
-        }}
+        className={`relative overflow-hidden bg-cover rounded-lg cursor-pointer ${heightClasses[cardHeight]} group`}
+        
       >
+        <img
+          src={images[0]}
+          alt={title}
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
         <div className="flex flex-col justify-center w-full h-full px-8 py-4 transition-opacity duration-300 opacity-0 backdrop-blur-sm bg-gray-800/60 group-hover:opacity-100">
           <h2 className="mt-22 text-base font-semibold text-white capitalize">
             {title}
@@ -63,7 +66,7 @@ const ProjectsCard = ({
         <div className="flex gap-x-1 items-center ">
           {showAuthor && (
             <img
-              className="mt-1 h-20 w-20 sm:w-[1.7rem] sm:h-[1.7rem] flex-shrink-0 object-cover rounded-full"
+              className="mt-1 h-6 w-6 sm:w-[1.7rem] sm:h-[1.7rem] flex-shrink-0 object-cover rounded-full"
               alt="user"
               src={author.avatar ?? "/default-avatar.png"}
             />
@@ -80,7 +83,7 @@ const ProjectsCard = ({
           )}
         </div>
 
-        {showView && <div className="flex items-center">
+        {/* {showView && <div className="flex items-center">
           <LikeIcon className="text-gray-400 w-5 h-5 mt-0.5" />
           <span className="ml-1 text-sm font-semibold text-gray-500 capitalize mr-1 ">
             {Math.floor(Math.random() * 101)}
@@ -89,9 +92,10 @@ const ProjectsCard = ({
           <span className="ml-1 text-sm font-semibold text-gray-500 capitalize ">
             {views}
           </span>
-        </div>}
+        </div>} */}
       </div>
     </Link>
+    
   );
 };
 

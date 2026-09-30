@@ -36,21 +36,18 @@ const CategoriesList = ({
   };
 
   return (
-    <div className="max-w-full px-16  py-4">
-      <div className=" lg:flex lg:items-center flex justify-between cursor-pointer  rounded-3xl flex-col md:flex-row gap-3 sm:gap-4 p-5  ">
-        <div className="flex shrink-0">
-          <SortDropdown sortValue={sort} onChange={handleSortChange} />
-        </div>
-
+    <div className="max-w-full   py-2">
+      {/* delete: px-16 */}
+      <div className=" lg:flex lg:items-center flex justify-between cursor-pointer  rounded-3xl flex-col md:flex-row gap-3 sm:gap-4 lg:p-5  ">
         <div className="flex items-center w-full gap-2 min-w-0">
           <button
-            className="custom-prev swiper-button-disabled"
+            className="custom-prev swiper-button-disabled hidden sm:block"
             // onClick={() => swiperRef.current?.slidePrev()}
           >
             ❮
           </button>
 
-          <div className="flex-1 min-w-0 overflow-hidden">
+          <div className=" min-w-0 overflow-hidden">
             <Swiper
               className="w-full "
               slidesPerView="auto"
@@ -60,17 +57,9 @@ const CategoriesList = ({
                 nextEl: ".custom-next",
               }}
               modules={[Keyboard, Navigation]}
-
-              // centeredSlides={true}
-              // breakpoints={{
-              //   1024: {
-              //     slidesPerView: 1,
-              //     spaceBetween: 45,
-              //   },
-              //   1200: {
-              //     slidesPerView: 1,
-              //   },
-              // }}
+              breakpoints={{
+                768: {},
+              }}
             >
               {CATEGRIES.map((categoryName) => {
                 const isActive =
@@ -107,11 +96,14 @@ const CategoriesList = ({
             </Swiper>
           </div>
           <button
-            className="custom-next swiper-button-disabled"
+            className="custom-next swiper-button-disabled hidden sm:block"
             // onClick={() => swiperRef.current?.slideNext()}
           >
             ❯
           </button>
+        </div>
+        <div className="flex shrink-0 ml-4">
+          <SortDropdown sortValue={sort} onChange={handleSortChange} />
         </div>
       </div>
     </div>

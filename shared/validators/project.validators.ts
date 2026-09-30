@@ -5,7 +5,7 @@ import { ProjectCategory } from "../types";
 export const createProjectSchema = z.object({
   title: z
     .string()
-    .min(1, "Title is required")
+    .min(5, "Title is required")
     .max(50, "The title must not exceed 50 characters"),
   // .regex(
   //   /^[a-яА-Я\s'-]+$/i,

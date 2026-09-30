@@ -8,7 +8,7 @@ import type { IProject } from "../../../../shared/types";
 const AllProjects = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const sort = searchParams.get("sort") ?? "-views";
-  const category = searchParams.get("category");
+  const category = searchParams.get("category") ?? "";
 
   const [page, setPage] = useState(1);
   const [allProjects, setAllProjects] = useState<IProject[]>([]);

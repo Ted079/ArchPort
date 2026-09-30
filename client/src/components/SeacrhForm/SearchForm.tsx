@@ -48,8 +48,9 @@ const SearchBar = ({
       <div
         className={`group flex items-center px-5 py-2 bg-[#f3f3f6] rounded-full transition-all duration-200 ${
           isFocused
-            ? "ring-2 ring-neutral-300 bg-white"
-            : "hover:bg-white hover:ring-2 hover:ring-stone-300"
+            ? "ring-2 ring-primary-light bg-white"
+            : "hover:bg-white hover:ring-2  hover:ring-primary-light " 
+            // hover:ring-stone-300
         }`}
       >
         <input
@@ -65,7 +66,7 @@ const SearchBar = ({
           onClick={() =>
             query.trim() && navigate(`/search?q=${encodeURIComponent(query)}`)
           }
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-stone-500 group-hover:scale-110 transition-transform ml-3 flex-shrink-0"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-primary group-hover:scale-110 transition-transform ml-3 flex-shrink-0"
         >
           <SearchIcon className="w-6 h-6 text-white" />
         </button>

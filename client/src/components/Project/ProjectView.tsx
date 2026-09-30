@@ -38,7 +38,6 @@ const ProjectView = ({
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-
   const handleDelete = async () => {
     try {
       await dispatch(deleteProj(id)).unwrap();
@@ -96,7 +95,7 @@ const ProjectView = ({
               More about this product
             </h1>
             <div className="mb-6">
-              <p className="block mt-2  text-gray-700  text-xl/8 ">
+              <p className="block mt-2  text-gray-700  text-xl/8 whitespace-pre-line">
                 {description}
               </p>
             </div>
@@ -104,33 +103,37 @@ const ProjectView = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4  pt-8">
               <div className="flex gap-2">
                 <span className="text-gray-500">Type:</span>
-                <span className="font-semibold capitalize">
-                  {project.category}
-                </span>
+                <span className="font-semibold capitalize">{category}</span>
               </div>
               {project.location && (
                 <div className="flex gap-2">
                   <span className="text-gray-500">Location:</span>
-                  <span className="font-semibold">{project.location}</span>
+                  <span className="font-semibold">{location}</span>
                 </div>
               )}
               {project.square && (
                 <div className="flex gap-2">
                   <span className="text-gray-500">Area:</span>
-                  <span className="font-semibold">{project.square} m²</span>
+                  <span className="font-semibold">{square} m²</span>
+                </div>
+              )}
+              {firm && (
+                <div className="flex gap-2">
+                  <span className="text-gray-500">Architect:</span>
+                  <span className="font-semibold">{firm}</span>
                 </div>
               )}
             </div>
-            <div className="flex flex-col gap-2 mb-3 pt-12">
-              {" "}
-              <span className="block font-medium dark:text-gray-200">
-                Tags:
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {tags &&
-                  tags.map((tag) => (
+            {tags && tags.length > 0 && (
+              <div className="flex flex-col gap-2 mb-3 pt-12">
+                <span className=" text-gray-500">Tags:</span>
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tag) => (
                     <span key={tag} className="flex items-center gap-1">
                       <Button
+                        onClick={() =>
+                          navigate(`/search?q=${encodeURIComponent(tag ?? "")}`)
+                        }
                         size="sm"
                         variant="secondary"
                         children={tag}
@@ -138,8 +141,9 @@ const ProjectView = ({
                       />
                     </span>
                   ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           <div className="flex flex-col items-center justify-center mt-8 w-full">

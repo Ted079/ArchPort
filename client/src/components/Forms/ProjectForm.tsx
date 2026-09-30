@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import type { CreateProjectFormInput } from "../../../../shared/validators/createProject.validators";
 import { ProjectCategory } from "../../../../shared/types";
@@ -50,7 +50,7 @@ const ProjectForm = ({
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
     watch,
     setValue,
   } = form;
@@ -84,7 +84,8 @@ const ProjectForm = ({
             />
             <h2 className="text-lg font-semibold mb-2">{title}</h2>
             <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
-              This information is only visible to employees of your firm
+              Add information about your project to showcase it in your
+              portfolio
             </p>
           </div>
           <div className="w-full lg:w-1/2">
@@ -170,7 +171,7 @@ const ProjectForm = ({
                 </div>
               ) : (
                 <>
-                  <ImagesIcon className="w-12 h-12 sm:w-16 sm:h-16 lg:w-18 lg:h-18 text-[#333333] mt-2 sm:mt-3" />
+                  <ImagesIcon className="w-12 h-12 sm:w-16 sm:h-16 lg:w-18 lg:h-18 text-[#333333] text-primary mt-2 sm:mt-3" />
 
                   <div>
                     <h2 className="mx-2 sm:mx-3 text-sm sm:text-base font-semibold text-gray-700 mt-2 sm:mt-3">
@@ -264,6 +265,7 @@ const ProjectForm = ({
               <label className="block mb-3 font-medium  dark:text-gray-200">
                 Firm
               </label>
+
               <input
                 {...register("firm")}
                 type="text"
@@ -271,6 +273,9 @@ const ProjectForm = ({
                      border-gray-300 focus:border-stone-500 "
                 placeholder="Add firm"
               />
+              <p className="text-xs text-gray-400 mt-1">
+                Add the firm or company involved in this project{" "}
+              </p>
             </div>
 
             <div className="mt-8">

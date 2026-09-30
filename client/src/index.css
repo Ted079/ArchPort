@@ -6,21 +6,51 @@
 
 @import "tailwindcss";
 
+@theme {
+  /* новая */
+  /* Primary */
+  --color-primary: #947a5a;
+  --color-primary-hover: #705a43;
+  --color-primary-light: #e8ded0;
+  --color-primary-background: #f7f5f1;
+
+  /* Text */
+  --color-text-primary: #29251f;
+  --color-text-secondary: #71695f;
+
+  /* Border */
+  --color-border: #d8d0c5;
+
+  /* ----------3blue-------- */
+
+  /* --color-primary: #365a73;
+  --color-primary-hover: #29475b;
+  --color-primary-light: #dce8ef;
+  --color-primary-background: #f3f7f9; */
+
+  /* Text */
+  /* --color-text-primary: #20282d;
+  --color-text-secondary: #60717c; */
+
+  /* Border */
+  /* --color-border: #d5e0e6; */
+
+  /* ----------4taupe-olive-------- */
+  /* Primary */
+  /* --color-primary: #747b68;
+  --color-primary-hover: #59604f;
+  --color-primary-light: #e1e4da;
+  --color-primary-background: #f6f7f3; */
+
+  /* Text */
+  /* --color-text-primary: #262824;
+  --color-text-secondary: #687066; */
+
+  /* Border */
+  /* --color-border: #d9ddd3; */
+}
+
 @layer base {
-  :root {
-    /* BRAND */
-    --brand-pink: #e94c88;
-    --brand-stone: #8b6f4e;
-    --brand-stone2: #f96e5b;
-    --brand-stone: #84934a;
-
-    --bg-primary: #fbfbfb;
-    --bg-secondary: #f4f4f4;
-
-    --text-primary: #252525;
-    --text-secondary: #333333;
-    --text-muted: #6b7280;
-  }
   body {
     font-family:
       "Inter",
@@ -30,13 +60,14 @@
       Roboto,
       sans-serif;
 
-
-
     color: var(--text-primary);
     background-color: var(--bg-primary);
   }
 
-  h1,h2,h3 {
+  h1,
+  h2,
+  h3 {
+    font-family: "Plus Jakarta Sans", sans-serif;
     
   }
 
@@ -62,21 +93,36 @@
   }
 }
 
-/* 
-#EA4C89 — яркий розово-малиновый (основной «брендовый» цвет Dribbble)
 
-#444444 — тёмно-серый (часто для текста)
 
-#8ABA56 — зелёный акцент
+/* m{
+  --breakpoint-xs: 500px;
+  --breakpoint-sm: 768px;
+  --breakpoint-md: 1024px;
+  --breakpoint-lg: 1200px;
+} */
 
-#FF8833 — оранжевый акцент
 
-#00B6E3 — голубой акцент
+/* Breakpoint	Для чего
+< 500px	           маленькие телефоны
+  500px (xs)	     телефоны
+  768px (sm)	     планшет / переход к desktop-навигации
+  1024px (md)	     нормальный desktop
+  1200px (lg)      большой desktop + максимальная ширина контента*/
 
-#9BA5A8 — серо-голубой/нейтральный
 
-#FBFBFB / #F4F4F4 — светлые почти белые цвета фона
+  /* Я бы сделал так
+<main className="px-4 sm:px-6 md:px-8 lg:px-16">
 
-#333333 / #252525 — очень тёмные оттенки для текста/фона */
+Получится:
 
-/* https://brandpalettes.com/dribbble-web-site-colors/?utm_source=chatgpt.com */
+< 640px → px-4
+≥ 640px → px-6
+≥ 768px → px-8
+≥ 1024px → px-16
+
+Если ты добавил свой xs = 500px, тогда:
+
+<main className="px-4 xs:px-5 sm:px-6 md:px-8 lg:px-16">
+
+Для твоего проекта я бы выбрал именно этот вариант — достаточно гибко и без лишних breakpoint'ов. */

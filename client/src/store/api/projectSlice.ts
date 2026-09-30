@@ -13,6 +13,16 @@ interface ProjectsResponse {
   };
 }
 
+interface ProjectFilter {
+  authorId?: string;
+  category?: string;
+  sort?: string;
+  limit?: number;
+  page?: number;
+  search?: string;
+  tags?: string[];
+}
+
 export const projectSlice = createApi({
   reducerPath: "projectApi",
   baseQuery: fetchBaseQuery({
@@ -27,40 +37,33 @@ export const projectSlice = createApi({
   }),
   tagTypes: ["Project"],
   endpoints: (builder) => ({
+    // getProjects: builder.query<ProjectsResponse, string>({
+    //   query: () => "/projects",
+    //   providesTags: (result, error, params) => [{ type: "Project" }],
+    // }),
+
     getOneProject: builder.query<IProject, string>({
       query: (id: string) => `/projects/${id}`,
       providesTags: (result, error, id) => [{ type: "Project", id }],
     }),
 
-    getProjects: builder.query<ProjectsResponse, string>({
-      query: () => "/projects",
-      providesTags: (result, error, params) => [{ type: "Project" }],
-    }),
-
-    getProjectByAuthor: builder.query<IProject[], string>({
-      query: (authorId: string) => `projects?authorId=${authorId}`,
-      providesTags: (result, error, authorId) => [
-        { type: "Project", id: `AUTHOR_${authorId}` },
-      ],
-    }),
-
-    getProjectByCategory: builder.query<ProjectsResponse, string>({
-      query: (category: string) => `projects?category=${category}`,
-      providesTags: (result, error, category) => [
-        { type: "Project", category },
-      ],
-    }),
-    getProjectsWithFilters: builder.query<ProjectsResponse, object>({
+    getProjectsWithFilters: builder.query<ProjectsResponse, ProjectFilter>({
       query: (params: object) => buildUrl3("/projects", params),
-      providesTags: (result, error, params) => [{ type: "Project", params }],
+      providesTags: (result, params) => [{ type: "Project", params }],
     }),
+
+    // getProjectByCategory: builder.query<ProjectsResponse, string>({
+    //   query: (category: string) => `projects?category=${category}`,
+    //   providesTags: (result, error, category) => [
+    //     { type: "Project", category },
+    //   ],
+    // }),
   }),
 });
 
 export const {
+  // useGetProjectsQuery,
   useGetOneProjectQuery,
-  useGetProjectByAuthorQuery,
-  useGetProjectByCategoryQuery,
-  useGetProjectsQuery,
+  // useGetProjectByCategoryQuery,
   useGetProjectsWithFiltersQuery,
 } = projectSlice;

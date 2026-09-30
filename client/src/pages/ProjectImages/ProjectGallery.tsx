@@ -21,12 +21,21 @@ function ProjectGallery() {
       <div className="relative flex-1 w-full max-w-[1440px] mx-auto flex gap-4 p-4 md:p-10 overflow-hidden group">
         <button
           onClick={() => navigate(-1)}
-          className="absolute top-8 left-8 z-50 flex items-center justify-center w-10 h-10 bg-[#333333] rounded-full transition-opacity duration-300 opacity-0 group-hover:opacity-100 hover:bg-[#444444]"
+          className="
+          absolute top-8 left-8 z-50
+          flex items-center justify-center
+          w-10 h-10
+          bg-[#333333]
+          rounded-full
+          transition-opacity duration-300
+          xl:opacity-0
+          xl:group-hover:opacity-100
+          hover:bg-[#444444]"
         >
           <CloseIcon className="w-5 h-5 text-white" />
         </button>
 
-        <div className="absolute bottom-12 left-10 z-50 transition-opacity duration-300 opacity-0 group-hover:opacity-100 pointer-events-none">
+        <div className="absolute bottom-12 left-10 z-50 transition-opacity duration-300 xl:opacity-0 xl:group-hover:opacity-100 pointer-events-none">
           <h1 className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg">
             {project?.title}
           </h1>

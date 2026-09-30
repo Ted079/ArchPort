@@ -11,9 +11,9 @@ const SearchPage = () => {
   const [page, setPage] = useState(1);
   const [allProject, setAllProject] = useState<IProject[]>([]);
 
-  const query = searchParams.get("q");
-  const category = searchParams.get("category");
-  const sort = searchParams.get("sort");
+  const query = searchParams.get("q") ?? "";
+  const category = searchParams.get("category") ?? "";
+  const sort = searchParams.get("sort") ?? "-views";
 
   const { data, isLoading, isError } = useGetProjectsWithFiltersQuery({
     search: query,

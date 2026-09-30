@@ -15,6 +15,8 @@ import jwt from "jsonwebtoken";
 import cloudinary from "../utils/cloudinary";
 import fs from "fs";
 
+// const avatarDicebear = `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(name)}`;
+
 export const register = async (req: Request, res: Response) => {
   try {
     const result = signupSchema.safeParse(req.body);
@@ -37,7 +39,16 @@ export const register = async (req: Request, res: Response) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPass = await bcrypt.hash(password, salt);
 
-    const user = await User.create({ email, name, password: hashedPass });
+    const avatarDicebear = `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(name)}`;
+    // const avatarDivebear2 = `https://api.dicebear.com/9.x/adventurer/svg?seed=${encodeURIComponent(name)}`;
+    // const avatarDicebear3 = `https://api.dicebear.com/9.x/avataaars/svg?seed=${encodeURIComponent(name)}`;
+
+    const user = await User.create({
+      email,
+      name,
+      password: hashedPass,
+      avatar: avatarDicebear,
+    });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
       expiresIn: "7d",
@@ -82,12 +93,12 @@ export const login = async (req: Request, res: Response) => {
     }
 
     const token = jwt.sign(
-      { id: user._id }, 
+      { id: user._id },
 
-      process.env.JWT_SECRET!, 
-      
-      { expiresIn: "7d",}
-  );
+      process.env.JWT_SECRET!,
+
+      { expiresIn: "7d" },
+    );
 
     const response: AuthResponse = {
       token,

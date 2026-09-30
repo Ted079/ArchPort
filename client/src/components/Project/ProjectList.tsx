@@ -38,7 +38,8 @@ const ProjectList = ({
   showTitle = false,
   showView = true,
   height = "sm",
-  className = "px-16 pb-1",
+  className = " pb-1",
+  // delete: px-16
 
   onLoadMore,
   showLoadMore = false,

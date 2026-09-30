@@ -10,24 +10,28 @@ interface HeroProps {
 }
 const Hero = ({ items }: HeroProps) => {
   const sliceItems = items.slice(0, 4);
-  console.log(sliceItems);
+  // console.log(sliceItems);
 
   return (
     <>
-      <div className="max-w-full  flex flex-col px-16 sm:py-10 mx-auto space-y-6 lg:h-[26rem] lg:py-16 lg:flex-row lg:items-center ">
+      <div className="max-w-full flex flex-col py-6 sm:py-10 mx-auto space-y-1 lg:h-[26rem] lg:py-16 lg:flex-row lg:items-center ">
+        {/* delete: px-16 space-y-6 */}
+        {/* idk: lg:py-16*/}
         <div className="w-full lg:w-1/2 mr-22">
           <div className="lg:max-w-xl">
-            <h1 className="text-center lg:text-left text-3xl   font-semibold tracking-wide dark:text-white md:text-5xl leading-tight lg:max-none  ">
-              Discover Top Architects & Designers
+            <h1 className="lg:text-center xs:text-right lg:text-left text-3xl   font-bold tracking-wide dark:text-white md:text-5xl leading-tight lg:max-none  ">
+              Discover Top
+              <br />
+              <span className="lg:whitespace-nowrap">Architects & Designers</span>
             </h1>
 
-            <p className="text-center lg:text-left mt-4 sm:px-16 lg:px-0 text-gray-600 dark:text-gray-300">
+            <p className="lg:text-center lg:text-left mt-4 sm:px-16 lg:px-0 text-gray-600 ">
               Browse exceptional portfolios from talented professionals
               specializing in architecture, interiors, and visual design — and
               find the right expert for your next idea.
             </p>
 
-            <div className="mt-10">
+            <div className="mt-6 lg:mt-10">
               <SearchBar />
             </div>
           </div>

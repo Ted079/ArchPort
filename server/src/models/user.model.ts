@@ -36,6 +36,8 @@ const UserSchema = new Schema<IUserDocument>(
       type: String,
       maxlength: 500,
     },
+
+    //cv pdf format add
   },
 
   { timestamps: true }

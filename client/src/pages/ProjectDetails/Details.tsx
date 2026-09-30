@@ -1,54 +1,52 @@
 import { useParams } from "react-router-dom";
 import {
   useGetOneProjectQuery,
-  useGetProjectByAuthorQuery,
+  useGetProjectsWithFiltersQuery,
 } from "../../store/api/projectSlice";
 import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../store";
-import { useEffect } from "react";
-
-import { getProjects } from "../../store/project/projectSlice";
 import ProjectList from "../../components/Project/ProjectList";
 import { ROUTES } from "../../utils/route";
 import ProjectView from "../../components/Project/ProjectView";
 
 const Details = () => {
   const { id } = useParams<{ id: string }>();
-  const dispatch = useAppDispatch();
-
   const { data: project, isLoading, error } = useGetOneProjectQuery(id!);
-
-
-  const { items } = useAppSelector((state) => state.project);
-  
-
   const authorId = project?.author._id;
-  const { data: authorItems = [] } = useGetProjectByAuthorQuery(authorId!, {
-    skip: !authorId,
-  });
+  const category = project?.category ?? "";
+  // const tags = project?.tags;
 
-  console.log(authorItems.projects);
-  
+  const { data: authorItems } = useGetProjectsWithFiltersQuery(
+    { authorId, limit: 6 },
+    {
+      skip: !authorId,
+    },
+  );
+  const authorProjects = authorItems?.projects ?? [];
 
-  
-  
-  
-  useEffect(() => {
-    dispatch(getProjects());
-  }, [dispatch]);
+  const { data } = useGetProjectsWithFiltersQuery(
+    {
+      sort: "-views",
+      limit: 3,
+      category,
+    },
+    {
+      skip: !category,
+    },
+  );
+  const moreProjects = data?.projects ?? [];
 
   if (isLoading) return <div>Загрузка...</div>;
   if (error) return <div>Ошибка сервера</div>;
 
   return (
-    <section className="bg-gray-100">
+    <section className="">
       <div className="max-w-full lg:max-w-5xl px-3 sm:px-6 sm:py-10 mx-auto  ">
         <ProjectView project={project} id={id!} />
 
-        {authorItems.length > 2 && (
+        {authorProjects.length > 2 && (
           <>
             <div className="flex justify-between">
-              <p className="max-w-lg mt-8 font-bold  text-gray-800 ">
+              <p className="max-w-lg  font-bold mt-10 text-gray-800 ">
                 More by {project?.author.name}
               </p>
               <Link
@@ -59,8 +57,7 @@ const Details = () => {
               </Link>
             </div>
             <ProjectList
-              items={authorItems.filter((item) => item._id !== id)}
-              limit={4}
+              items={authorProjects.filter((item) => item._id !== id)}
               showAuthor={false}
               showView={false}
               className="px-0 pb-0"
@@ -68,19 +65,29 @@ const Details = () => {
           </>
         )}
         <div className="flex-1 h-px bg-gray-300  my-15"></div>
-        <p className="max-w-lg mt-8 font-bold  text-gray-800 ">
-          You migth like also
-        </p>
-       {  <ProjectList
-          items={items}
-          limit={6}
-          height="md"
-          column={3}
-          showAuthor={false}
-          showTitle={true}
-          showView={false}
-          className="px-0 pb-0"
-        />}
+
+        <div className="flex justify-between">
+          <p className="max-w-lg font-bold mt-2 text-gray-800 ">
+            You migth like also
+          </p>
+          <Link
+            to={`/projects?category=${encodeURIComponent(category ?? "")}`}
+            className="max-w-lg   text-sm  text-gray-600 "
+          >
+            View all projects
+          </Link>
+        </div>
+        {
+          <ProjectList
+            items={moreProjects}
+            height="sm"
+            column={3}
+            showAuthor={false}
+            showTitle={true}
+            showView={false}
+            className="px-0 pb-0"
+          />
+        }
       </div>
     </section>
   );
