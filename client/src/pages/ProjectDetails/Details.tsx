@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import ProjectList from "../../components/Project/ProjectList";
 import { ROUTES } from "../../utils/route";
 import ProjectView from "../../components/Project/ProjectView";
+import ProjectSkeleton from "../../components/UI/ProjectSkeleton";
 
 const Details = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,7 +36,15 @@ const Details = () => {
   );
   const moreProjects = data?.projects ?? [];
 
-  if (isLoading) return <div>Загрузка...</div>;
+  if (isLoading) {
+    return (
+      <section>
+        <div className="max-w-full lg:max-w-5xl px-3 sm:px-6 sm:py-10 mx-auto">
+          <ProjectSkeleton value={1} size="lg" />
+        </div>
+      </section>
+    );
+  }
   if (error) return <div>Ошибка сервера</div>;
 
   return (

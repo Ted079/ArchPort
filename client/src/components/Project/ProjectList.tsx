@@ -51,22 +51,18 @@ const ProjectList = ({
         className={`grid grid-cols-1 gap-8 mt-8 xl:mt-1 xl:gap-8 md:grid-cols-2 ${columnClasses[column]}`}
       >
         {isLoading ? (
-          <>
-            <ProjectSkeleton />
-          </>
+          <ProjectSkeleton value={8} />
         ) : (
-          <>
-            {items.map((item) => (
-              <ProjectsCard
-                {...item}
-                showAuthor={showAuthor}
-                showTitle={showTitle}
-                showView={showView}
-                cardHeight={height}
-                key={item._id}
-              />
-            ))}
-          </>
+          items.map((item) => (
+            <ProjectsCard
+              {...item}
+              showAuthor={showAuthor}
+              showTitle={showTitle}
+              showView={showView}
+              cardHeight={height}
+              key={item._id}
+            />
+          ))
         )}
       </div>
       {showLoadMore && hasMore && (
