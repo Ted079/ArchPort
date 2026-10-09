@@ -16,26 +16,29 @@ const Details = () => {
   const category = project?.category ?? "";
   // const tags = project?.tags;
 
-  const { data: authorItems } = useGetProjectsWithFiltersQuery(
-    { authorId, limit: 6 },
-    {
-      skip: !authorId,
-    },
-  );
+  const { data: authorItems, isLoading: isAuthorLoading } =
+    useGetProjectsWithFiltersQuery(
+      { authorId, limit: 6 },
+      {
+        skip: !authorId,
+      },
+    );
   const authorProjects = authorItems?.projects ?? [];
 
-  const { data } = useGetProjectsWithFiltersQuery(
-    {
-      sort: "-views",
-      limit: 3,
-      category,
-    },
-    {
-      skip: !category,
-    },
-  );
+  const { data, isLoading: isMoreProjectsLoading } =
+    useGetProjectsWithFiltersQuery(
+      {
+        sort: "-views",
+        limit: 3,
+        category,
+      },
+      {
+        skip: !category,
+      },
+    );
   const moreProjects = data?.projects ?? [];
 
+  const showSkekelton = true;
   if (isLoading) {
     return (
       <section>
@@ -52,27 +55,34 @@ const Details = () => {
       <div className="max-w-full lg:max-w-5xl px-3 sm:px-6 sm:py-10 mx-auto  ">
         <ProjectView project={project} id={id!} />
 
-        {authorProjects.length > 2 && (
-          <>
-            <div className="flex justify-between">
-              <p className="max-w-lg  font-bold mt-10 text-gray-800 ">
-                More by {project?.author.name}
-              </p>
-              <Link
-                to={ROUTES.PROFILE}
-                className="max-w-lg  mt-8 text-sm  text-gray-600 "
-              >
-                View profile
-              </Link>
-            </div>
-            <ProjectList
-              items={authorProjects.filter((item) => item._id !== id)}
-              showAuthor={false}
-              showView={false}
-              className="px-0 pb-0"
-            />
-          </>
+        {isAuthorLoading ? (
+          <div className="flex gap-4">
+            <ProjectSkeleton value={3} size="sm" />
+          </div>
+        ) : (
+          authorProjects.length > 2 && (
+            <>
+              <div className="flex justify-between">
+                <p className="max-w-lg  font-bold mt-10 text-gray-800 ">
+                  More by {project?.author.name}
+                </p>
+                <Link
+                  to={ROUTES.PROFILE}
+                  className="max-w-lg  mt-8 text-sm  text-gray-600 "
+                >
+                  View profile
+                </Link>
+              </div>
+              <ProjectList
+                items={authorProjects.filter((item) => item._id !== id)}
+                showAuthor={false}
+                showView={false}
+                className="px-0 pb-0"
+              />
+            </>
+          )
         )}
+
         <div className="flex-1 h-px bg-gray-300  my-15"></div>
 
         <div className="flex justify-between">
@@ -86,7 +96,12 @@ const Details = () => {
             View all projects
           </Link>
         </div>
-        {
+        {isMoreProjectsLoading? (
+          <div className="flex gap-4">
+
+            <ProjectSkeleton value={3} size="sm" />
+          </div>
+        ) : (
           <ProjectList
             items={moreProjects}
             height="sm"
@@ -96,7 +111,7 @@ const Details = () => {
             showView={false}
             className="px-0 pb-0"
           />
-        }
+        )}
       </div>
     </section>
   );

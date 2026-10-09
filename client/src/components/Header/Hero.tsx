@@ -1,16 +1,16 @@
 import type { IProject } from "../../../../shared/types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-// import "swiper/css";
 import SearchBar from "../SeacrhForm/SearchForm";
 import { Link } from "react-router-dom";
+import ProjectSkeleton from "../UI/ProjectSkeleton";
 
 interface HeroProps {
   items: IProject[];
+  isLoading: boolean;
 }
-const Hero = ({ items }: HeroProps) => {
+const Hero = ({ items, isLoading = false }: HeroProps) => {
   const sliceItems = items.slice(0, 4);
-  // console.log(sliceItems);
 
   return (
     <>
@@ -22,7 +22,9 @@ const Hero = ({ items }: HeroProps) => {
             <h1 className="lg:text-center xs:text-right lg:text-left text-3xl   font-bold tracking-wide dark:text-white md:text-5xl leading-tight lg:max-none  ">
               Discover Top
               <br />
-              <span className="lg:whitespace-nowrap">Architects & Designers</span>
+              <span className="lg:whitespace-nowrap">
+                Architects & Designers
+              </span>
             </h1>
 
             <p className="lg:text-center lg:text-left mt-4 sm:px-16 lg:px-0 text-gray-600 ">
@@ -38,39 +40,43 @@ const Hero = ({ items }: HeroProps) => {
         </div>
 
         <div className="hidden lg:flex items-center justify-center w-full h-102 lg:w-1/2">
-          <Swiper
-            className="object-cover w-full h-full max-w-xl rounded-3xl"
-            spaceBetween={15}
-            slidesPerView={1}
-            centeredSlides={true}
-            breakpoints={{
-              1024: {
-                slidesPerView: 1,
-                spaceBetween: 45,
-              },
-              1200: {
-                slidesPerView: 1,
-              },
-            }}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-            speed={700}
-            modules={[Autoplay]}
-          >
-            {sliceItems.map((item) => (
-              <SwiperSlide>
-                <Link to={`/details/${item._id}`}>
-                  <img
-                    className="object-cover w-full h-full max-w-xl rounded-3xl"
-                    src={item.images[0]}
-                    alt="glasses photo2"
-                  />
-                </Link>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          {isLoading ? (
+            <ProjectSkeleton value={1} size="lg" showLine={false} />
+          ) : (
+            <Swiper
+              className="object-cover w-full h-full max-w-xl rounded-3xl"
+              spaceBetween={15}
+              slidesPerView={1}
+              centeredSlides={true}
+              breakpoints={{
+                1024: {
+                  slidesPerView: 1,
+                  spaceBetween: 45,
+                },
+                1200: {
+                  slidesPerView: 1,
+                },
+              }}
+              autoplay={{
+                delay: 3000,
+                disableOnInteraction: false,
+              }}
+              speed={700}
+              modules={[Autoplay]}
+            >
+              {sliceItems.map((item) => (
+                <SwiperSlide>
+                  <Link to={`/details/${item._id}`}>
+                    <img
+                      className="object-cover w-full h-full max-w-xl rounded-3xl"
+                      src={item.images[0]}
+                      alt="glasses photo2"
+                    />
+                  </Link>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
         </div>
       </div>
     </>

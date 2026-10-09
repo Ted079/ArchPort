@@ -83,7 +83,7 @@ const ProjectsCard = ({
           )}
         </div>
 
-        {/* {showView && <div className="flex items-center">
+        {showView && <div className="flex items-center">
           <LikeIcon className="text-gray-400 w-5 h-5 mt-0.5" />
           <span className="ml-1 text-sm font-semibold text-gray-500 capitalize mr-1 ">
             {Math.floor(Math.random() * 101)}
@@ -92,7 +92,7 @@ const ProjectsCard = ({
           <span className="ml-1 text-sm font-semibold text-gray-500 capitalize ">
             {views}
           </span>
-        </div>} */}
+        </div>}
       </div>
     </Link>
     

@@ -11,12 +11,14 @@ const Home = () => {
     sort: "-views",
   });
 
-  const heroData = useGetProjectsWithFiltersQuery({
-    sort: "-CreatedAt",
-  });
+  
+  const { data: heroData, isLoading: isHeroLoading } =
+    useGetProjectsWithFiltersQuery({
+      sort: "-CreatedAt",
+    });
 
   const items = data?.projects ?? [];
-  const heroItems = heroData.data?.projects ?? [];
+  const heroItems = heroData?.projects ?? [];
 
   if (isError) {
     return <div>Error..</div>;
@@ -24,7 +26,7 @@ const Home = () => {
 
   return (
     <div>
-      <Hero items={heroItems} />
+      <Hero items={heroItems} isLoading={isHeroLoading}/>
       <UploadProjectSection />
       <CategoriesList />
       <ProjectList
