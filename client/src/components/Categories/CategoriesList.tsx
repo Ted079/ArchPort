@@ -1,10 +1,9 @@
 import { CATEGRIES } from "../../utils/constants";
 import SortDropdown from "../UI/SortDropdown";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Keyboard } from "swiper/modules";
 import "./CategoriesList.css";
-// import "swiper/css/navigation";
 
 interface CategoriesListProps {
   onCategorySelect?: (category: string | null) => void;
@@ -22,8 +21,7 @@ const CategoriesList = ({
 }: CategoriesListProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  // const { category } = useParams();
-  // const selectCategory = activeCategory ?? category;
+
   const selectCategory = activeCategory;
 
   const handleSortChange = (value: string) => {
@@ -37,13 +35,9 @@ const CategoriesList = ({
 
   return (
     <div className="max-w-full   py-2">
-      {/* delete: px-16 */}
       <div className=" lg:flex lg:items-center flex justify-between cursor-pointer  rounded-3xl flex-col md:flex-row gap-3 sm:gap-4 lg:p-5  ">
         <div className="flex items-center w-full gap-2 min-w-0">
-          <button
-            className="custom-prev swiper-button-disabled hidden sm:block"
-            // onClick={() => swiperRef.current?.slidePrev()}
-          >
+          <button className="custom-prev swiper-button-disabled hidden sm:block">
             ❮
           </button>
 
@@ -51,7 +45,6 @@ const CategoriesList = ({
             <Swiper
               className="w-full "
               slidesPerView="auto"
-              // spaceBetween={1}
               navigation={{
                 prevEl: ".custom-prev",
                 nextEl: ".custom-next",
@@ -86,7 +79,6 @@ const CategoriesList = ({
                   ? "bg-neutral-200  "
                   : "bg-transparent hover:text-gray-700"
               }`}
-                      // bg-transparent
                     >
                       {categoryName.label}
                     </button>
@@ -95,10 +87,7 @@ const CategoriesList = ({
               })}
             </Swiper>
           </div>
-          <button
-            className="custom-next swiper-button-disabled hidden sm:block"
-            // onClick={() => swiperRef.current?.slideNext()}
-          >
+          <button className="custom-next swiper-button-disabled hidden sm:block">
             ❯
           </button>
         </div>

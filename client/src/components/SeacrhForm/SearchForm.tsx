@@ -60,7 +60,7 @@ const SearchBar = ({
           onFocus={() => setIsFocused(true)}
           onKeyDown={handleEnter}
           placeholder={placeholder}
-          className="flex-grow bg-transparent  text-sm placeholder-neutral-700 focus:outline-none pl-2"
+          className="flex-grow bg-transparent  text-sm placeholder-gray-500 focus:outline-none pl-2"
         />
         <button
           onClick={() =>
