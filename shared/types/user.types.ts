@@ -5,6 +5,7 @@ export interface IUser {
   avatar?: string;
   bio?: string;
   createdAt: Date;
+  // location: string;
   // favorites: string[],
 }
 
@@ -23,4 +24,3 @@ export interface AuthResponse {
   token: string;
   user: IUser;
 }
-

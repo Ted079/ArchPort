@@ -22,7 +22,7 @@ interface ButtonProps {
 
 const sizeClasses = {
   sm: "px-3 py- text-xs sm:px-4 sm:py-2",
-  md: "px-4 py-2 text-sm sm:text-base sm:px-6",
+  md: "px-4 py-2 text-sm sm:text-[14px] sm:px-7",
   lg: "px-6 py-3 text-lg sm:px-10 sm:py-4",
 };
 

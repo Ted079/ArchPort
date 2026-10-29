@@ -88,7 +88,7 @@ const ProjectForm = ({
               portfolio
             </p>
           </div>
-          <div className="w-full lg:w-1/2">
+          <div className="w-full lg:w-[700px] p-6  border border-gray-200 rounded-2xl">
             <div>
               <label className="block mb-3 font-medium  dark:text-gray-200">
                 Project Name
@@ -99,7 +99,7 @@ const ProjectForm = ({
                 className={`w-full py-2  px-4  rounded-lg  focus:outline-none border transition-all ${
                   errors.title
                     ? "border-red-500 "
-                    : "border-gray-300 focus:border-stone-500 "
+                    : "border-gray-200 focus:border-stone-500 "
                 }`}
                 placeholder="Add project name"
               />
@@ -148,7 +148,7 @@ const ProjectForm = ({
             <label
               htmlFor="dropzone-file"
               className={`flex flex-col items-center  px-4 sm:px-6 py-4 sm:py-6 h-40 sm:h-60 mx-auto mt-4 sm:mt-6 text-center bg-white rounded-lg cursor-pointer border-2 border-dashed transition-all ${
-                errors.images ? "border-red-500" : "border-gray-300"
+                errors.images ? "border-red-500" : "border-gray-200"
               }`}
             >
               {displayFiles.length > 0 ? (
@@ -208,7 +208,7 @@ const ProjectForm = ({
                 className={`block w-full py-2  rounded-lg px-4 focus:outline-none focus:ring focus:ring-opacity-40 border transition-all ${
                   errors.description
                     ? "border-red-500 focus:border-red-400 focus:ring-red-300"
-                    : "border-gray-300 focus:border-stone-400 focus:ring-stone-300"
+                    : "border-gray-200 focus:border-stone-400 focus:ring-stone-300"
                 }`}
                 placeholder="Add project description "
                 rows={5}
@@ -235,7 +235,7 @@ const ProjectForm = ({
                     <div
                       className="px-3 sm:px-6 py-1 py-2 rounded-full border text-xs sm:text-sm transition-all 
                     peer-checked:bg-[#252525] peer-checked:border-transparent peer-checked:text-white 
-                    border-gray-300 hover:border-stone-400"
+                    border-gray-200 hover:border-stone-400"
                     >
                       {cat.charAt(0).toUpperCase() + cat.slice(1)}
                     </div>
@@ -257,7 +257,7 @@ const ProjectForm = ({
                 {...register("location")}
                 type="text"
                 className="w-full py-2  px-4  rounded-lg  focus:outline-none border transition-all 
-                     border-gray-300 focus:border-stone-500 "
+                     border-gray-200 focus:border-stone-500 "
                 placeholder="Add location"
               />
             </div>
@@ -270,7 +270,7 @@ const ProjectForm = ({
                 {...register("firm")}
                 type="text"
                 className="w-full py-2  px-4  rounded-lg  focus:outline-none border transition-all 
-                     border-gray-300 focus:border-stone-500 "
+                     border-gray-200 focus:border-stone-500 "
                 placeholder="Add firm"
               />
               <p className="text-xs text-gray-400 mt-1">
@@ -286,7 +286,7 @@ const ProjectForm = ({
                 {...register("square", { valueAsNumber: true })}
                 type="number"
                 className="w-full py-2  px-4  rounded-lg  focus:outline-none border transition-all 
-                     border-gray-300 focus:border-stone-500 "
+                     border-gray-200 focus:border-stone-500 "
                 placeholder="Add square"
               />
             </div>
@@ -323,7 +323,7 @@ const ProjectForm = ({
                 type="text"
                 disabled={watchedTags.length >= 10}
                 className="w-full py-2 px-4 rounded-lg focus:outline-none border transition-all
-               border-gray-300 focus:border-stone-500 disabled:opacity-50"
+               border-gray-200 focus:border-stone-500 disabled:opacity-50"
                 placeholder={
                   watchedTags.length >= 10
                     ? "Maximum 10 tags"

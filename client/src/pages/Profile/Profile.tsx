@@ -9,11 +9,13 @@ import { EditIcon } from "../../components/UI/icons";
 import { PlusIcon } from "../../components/UI/icons/plusIcon";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../utils/route";
+import ProfileNavigation from "./ProfileNavigation";
 
 const Profile = () => {
   const dispacth = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const { items } = useAppSelector((state) => state.project);
+  
 
   useEffect(() => {
     if (user?._id) {
@@ -26,7 +28,8 @@ const Profile = () => {
     <div>
       {/* Если данных пользователя еще нет, можно показать скелетон или null */}
       {user ? <UserInfo user={user} /> : <p>Loading...</p>}
-      <CategoriesList />
+      {/* <CategoriesList /> */}
+      {/* <ProfileNavigation/> */}
       {/* <div>profile menu bar</div> */}
       <div className="flex-1 h-px bg-gray-200 mt-10 mb-10"></div>
 

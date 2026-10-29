@@ -63,6 +63,7 @@ export const register = async (req: Request, res: Response) => {
         avatar: user.avatar,
         bio: user.bio,
         createdAt: user.createdAt,
+        // location: user.location,
       },
     };
     res.status(201).json(response);
@@ -109,6 +110,7 @@ export const login = async (req: Request, res: Response) => {
         avatar: user.avatar,
         bio: user.bio,
         createdAt: user.createdAt,
+        // location: user.location,
       },
     };
 

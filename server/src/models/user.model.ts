@@ -1,9 +1,9 @@
 import { model, Schema } from "mongoose";
 import { IUser } from "../../../shared/types/user.types";
 
-export interface IUserDocument extends Omit<IUser, "_id">, Document{
-    password: string
-};
+export interface IUserDocument extends Omit<IUser, "_id">, Document {
+  password: string;
+}
 
 const UserSchema = new Schema<IUserDocument>(
   {
@@ -20,7 +20,7 @@ const UserSchema = new Schema<IUserDocument>(
       trim: true,
       unique: true,
       lowercase: true,
-    //   match: [/^\S+@\S+\.\S+$/, "Please enter a valid email"],
+      //   match: [/^\S+@\S+\.\S+$/, "Please enter a valid email"],
     },
     password: {
       type: String,
@@ -36,11 +36,17 @@ const UserSchema = new Schema<IUserDocument>(
       type: String,
       maxlength: 500,
     },
+    
+    // location: {
+    //   type: String,
+    //   trim: true,
+    //   default: "",
+    // },
 
     //cv pdf format add
   },
 
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const User = model("User", UserSchema);

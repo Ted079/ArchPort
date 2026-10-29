@@ -2,11 +2,15 @@ import React from "react";
 import type { IUser } from "../../../../shared/types/user.types";
 import Button from "../UI/Button";
 import { EditIcon } from "../UI/icons";
+import { useNavigate } from "react-router-dom";
 
 interface UserInfoProps {
   user: IUser;
 }
 const UserInfo = ({ user }: UserInfoProps) => {
+  console.log(user);
+
+  const navigate = useNavigate();
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="container flex justify-center  px-4 pt-12 pb-6 mx-auto gap-8">
@@ -26,7 +30,22 @@ const UserInfo = ({ user }: UserInfoProps) => {
           <p className="block max-w-2xl mt-3 mb-3 text-gray-500 dark:text-gray-300">
             {user.email}
           </p>
-          <Button children="Edit Profile" size="md" icon={<EditIcon />} />
+          <div className="flex gap-5">
+            <Button
+              children="Edit Profile"
+              size="md"
+              icon={<EditIcon />}
+              className="font-medium py-3 "
+              onClick={() => navigate("settings")}
+            />
+            {/* <Button
+              children="Edit Profile"
+              size="md"
+              icon={<EditIcon />}
+              className="font-medium py-4 px-4"
+              onClick={() => navigate("settings")}
+            /> */}
+          </div>
         </div>
       </div>
     </section>
