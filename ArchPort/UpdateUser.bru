@@ -1,0 +1,28 @@
+meta {
+  name: UpdateUser
+  type: http
+  seq: 13
+}
+
+patch {
+  url: http://localhost:5000/me
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODU4YTdiYjZiNGUwYmE2ZmIyOTdiYyIsImlhdCI6MTc5MzY0NzczNCwiZXhwIjoxNzk0MjUyNTM0fQ.wVXZoqK56Io3nzbjMrdBI1f5cnut-m8rDcAFW94-peM
+}
+
+body:json {
+  {
+  "name": "Georgiyyy" ,
+  "email": "ge32@gmail.com",
+  "bio":"123456789LePass"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

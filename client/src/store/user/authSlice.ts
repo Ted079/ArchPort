@@ -4,6 +4,7 @@ import type {
   RegisterDTO,
   IUser,
   LoginDTO,
+  IUpdateUser,
 } from "../../../../shared/types/user.types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
@@ -18,7 +19,7 @@ export const createUser = createAsyncThunk<
   try {
     const response = await axios.post<AuthResponse>(
       "http://localhost:5000/api/auth/register",
-      credentials
+      credentials,
     );
     return response.data;
   } catch (error: any) {
@@ -35,7 +36,7 @@ export const loginUser = createAsyncThunk<
   try {
     const response = await axios.post(
       "http://localhost:5000/api/auth/login",
-      credentials
+      credentials,
     );
     return response.data;
   } catch (error: any) {
@@ -62,10 +63,35 @@ export const getMe = createAsyncThunk<IUser, void, { rejectValue: string }>(
     } catch (error: any) {
       return thunkAPI.rejectWithValue("Not authorized!");
     }
-  }
+  },
 );
 
-// updateUser
+export const updateUser = createAsyncThunk<
+  IUser,
+  IUpdateUser,
+  { rejectValue: string }
+>("auth, updateUser", async (credentials: IUpdateUser, thunkAPI) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      return thunkAPI.rejectWithValue("Not authorized");
+    }
+    const response = await axios.patch(
+      "http://localhost:5000/api/auth/me",
+      credentials,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue("Not authorized!");
+  }
+});
 
 interface UserState {
   user: IUser | null;
@@ -108,7 +134,7 @@ const userSlice = createSlice({
           state.isAuthenticated = true;
 
           localStorage.setItem("token", action.payload.token);
-        }
+        },
       )
       .addCase(createUser.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -126,7 +152,7 @@ const userSlice = createSlice({
           state.isAuthenticated = true;
 
           localStorage.setItem("token", action.payload.token);
-        }
+        },
       )
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -141,6 +167,19 @@ const userSlice = createSlice({
         state.isAuthenticated = true;
       })
       .addCase(getMe.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || "Not authorized";
+        state.isAuthenticated = false;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUser.fulfilled, (state, action: PayloadAction<IUser>) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        state.isAuthenticated = true;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || "Not authorized";
         state.isAuthenticated = false;

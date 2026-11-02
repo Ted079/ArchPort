@@ -22,23 +22,16 @@ export const signupSchema = z.object({
 export type SignupFormData = z.infer<typeof signupSchema>;
 export type SignupError = z.ZodError<SignupFormData>;
 
-
-
-
 export const loginSchema = z.object({
   email: z.email("Incorrect email address"),
   password: z.string().min(1, "Password is required"),
 });
 
+export const updateUserSchema = z.object({
+  name: z.string().trim().min(4).max(20).optional(),
+  email: z.email().optional(),
+  bio: z.string().max(500).optional(),
+});
+
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type LoginError = z.ZodError<LoginFormData>;
-
-
-
-
-
-
-
-
-
-

@@ -1,6 +1,8 @@
 import type { Request, Response } from "express";
 import {
   AuthResponse,
+  IUpdateUser,
+  IUser,
   LoginDTO,
   RegisterDTO,
 } from "../../../shared/types/user.types";
@@ -27,7 +29,7 @@ export const register = async (req: Request, res: Response) => {
         errors: result.error.issues,
       });
     }
-    const { email, name, password }: RegisterDTO = req.body;
+    const { email, name, password }: RegisterDTO = result.data; 
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -81,7 +83,7 @@ export const login = async (req: Request, res: Response) => {
         errors: result.error.issues,
       });
     }
-    const { email, password }: LoginDTO = req.body;
+    const { email, password }: LoginDTO = result.data;
 
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
@@ -123,7 +125,7 @@ export const login = async (req: Request, res: Response) => {
 
 export const getMe = async (req: Request, res: Response) => {
   try {
-    const user = await User.findById(req.userId);
+    const user = await User.findById(req.userId).select("-password"); ///
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -135,6 +137,37 @@ export const getMe = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const meUpdate = async (req: Request, res: Response) => {
+  try {
+    if (!req.userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    if (!req.body) {
+      return res.status(400).json({ message: "Bad Request" });
+    }
+
+
+    const user = await User.findByIdAndUpdate(
+      req.userId,
+      { $set: req.body },
+
+      { new: true, runValidators: true },
+    ).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "user not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const changePassword = () => {};
 
 export const uploadAvatar = async (req: Request, res: Response) => {
   try {
@@ -186,7 +219,7 @@ export const uploadAvatar = async (req: Request, res: Response) => {
 
 export const deleteAvatar = async (req: Request, res: Response) => {
   if (!req.userId) {
-    res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   try {
@@ -196,7 +229,7 @@ export const deleteAvatar = async (req: Request, res: Response) => {
         avatar: "https://via.placeholder.com/150",
       },
       { new: true },
-    ).select("-passsword");
+    ).select("-password");
 
     if (!user) {
       return res.status(404).json({ user: "User not found" });

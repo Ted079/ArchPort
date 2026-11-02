@@ -24,3 +24,9 @@ export interface AuthResponse {
   token: string;
   user: IUser;
 }
+
+export interface IUpdateUser {
+  name: string;
+  email: string;
+  bio: string;
+}
