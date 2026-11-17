@@ -29,7 +29,7 @@ export const register = async (req: Request, res: Response) => {
         errors: result.error.issues,
       });
     }
-    const { email, name, password }: RegisterDTO = result.data; 
+    const { email, name, password }: RegisterDTO = result.data;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -148,7 +148,6 @@ export const meUpdate = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Bad Request" });
     }
 
-
     const user = await User.findByIdAndUpdate(
       req.userId,
       { $set: req.body },
@@ -170,14 +169,14 @@ export const meUpdate = async (req: Request, res: Response) => {
 export const changePassword = () => {};
 
 export const uploadAvatar = async (req: Request, res: Response) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
-    }
+  if (!req.file) {
+    return res.status(400).json({ message: "No file uploaded" });
+  }
 
-    if (!req.userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+  if (!req.userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  try {
     const result = await cloudinary.uploader.upload(req.file.path, {
       folder: "uploads",
       transformation: [

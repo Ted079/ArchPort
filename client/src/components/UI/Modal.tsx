@@ -8,7 +8,6 @@ import {
   Description,
 } from "@headlessui/react";
 
-
 interface ModalProps {
   className?: string;
   icon?: React.ReactNode;
@@ -19,6 +18,8 @@ interface ModalProps {
   confirmText?: string;
   cancelText?: string;
   isOpen?: boolean;
+
+  children?: React.ReactNode;
 }
 
 const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
@@ -31,6 +32,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     confirmText,
     cancelText,
     isOpen,
+    children,
   }) => {
     return (
       <Dialog
@@ -63,22 +65,29 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
               </Description>
             </div>
 
+            <div>{children}</div>
+
             <div className="mt-5 ">
               <div className="">
-                <Button
-                  size="md"
-                  className="w-full justify-center mb-3"
-                  variant="primary"
-                  children={confirmText}
-                  onClick={onConfirm}
-                />
-                <Button
-                  size="md"
-                  className="w-full justify-center"
-                  variant="secondary"
-                  children={cancelText}
-                  onClick={onCancel}
-                />
+                {confirmText && (
+                  <Button
+                    size="md"
+                    className="w-full justify-center mb-3"
+                    variant="primary"
+                    children={confirmText}
+                    onClick={onConfirm}
+                  />
+                )}
+
+                {cancelText && (
+                  <Button
+                    size="md"
+                    className="w-full justify-center"
+                    variant="secondary"
+                    children={cancelText}
+                    onClick={onCancel}
+                  />
+                )}
               </div>
             </div>
           </DialogPanel>

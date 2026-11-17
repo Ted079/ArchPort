@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../store";
 import Button from "../../components/UI/Button";
 import { updateUser } from "../../store/user/authSlice";
 import Modal from "../../components/UI/Modal";
+import AvatarUpload from "./AvatarUpload";
 
 function Setting() {
   const dispacth = useAppDispatch();
@@ -68,7 +69,7 @@ function Setting() {
                     alt="user"
                   />
                 </div>
-
+                {/* upload avatar */}
                 <div className="flex flex-col  mt-6 ">
                   <div className="flex gap-5">
                     <Button
@@ -188,9 +189,11 @@ function Setting() {
         onCancel={() => {
           setIsOpen(false);
         }}
-         confirmText="Choose File"
+        //  confirmText="Choose File"
         cancelText="Cancel"
-      />
+      >
+        <AvatarUpload />
+      </Modal>
     </>
   );
 }

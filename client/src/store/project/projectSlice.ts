@@ -123,7 +123,7 @@ interface UploadResoponse {
   project: IProject;
 }
 
-interface UploadImagesPayload {
+interface UploadedImagesPayload {
   projectId: string;
   formData: FormData;
   currentImages?: string[];
@@ -131,11 +131,14 @@ interface UploadImagesPayload {
 
 export const uploadImageFiles = createAsyncThunk<
   IProject,
-  UploadImagesPayload,
+  UploadedImagesPayload,
   { rejectValue: string }
 >(
   "images/uploadImageFiles",
-  async ({ projectId, formData, currentImages }, thunkAPI) => {
+  async (
+    { projectId, formData, currentImages }: UploadedImagesPayload,
+    thunkAPI,
+  ) => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post<UploadResoponse>(

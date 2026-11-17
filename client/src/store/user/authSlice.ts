@@ -8,6 +8,7 @@ import type {
 } from "../../../../shared/types/user.types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { BASE_URL } from "../../utils/constants";
 
 export const createUser = createAsyncThunk<
   AuthResponse,
@@ -70,7 +71,7 @@ export const updateUser = createAsyncThunk<
   IUser,
   IUpdateUser,
   { rejectValue: string }
->("auth, updateUser", async (credentials: IUpdateUser, thunkAPI) => {
+>("auth/updateUser", async (credentials: IUpdateUser, thunkAPI) => {
   try {
     const token = localStorage.getItem("token");
 
@@ -93,12 +94,47 @@ export const updateUser = createAsyncThunk<
   }
 });
 
+interface AvatarUploadResoponse {
+  message: string;
+  avatar: string;
+  user: IUser;
+}
+export const UploadAvatarFile = createAsyncThunk<
+  IUser,
+  FormData,
+  { rejectValue: string }
+>("auth/uploadAvatar", async (FormData, thunkAPI) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("Not authorized");
+    }
+    const res = await axios.post<AvatarUploadResoponse>(
+      `${BASE_URL}/auth/avatar`,
+      FormData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return res.data.user;
+  } catch (error: any) {
+    console.log("SERVER ERROR DATA:", error.response?.data);
+    const message = error?.data?.message || "Server Error";
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
 interface UserState {
   user: IUser | null;
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+
+  isAvatarUploading: boolean;
+  isUpdatingUser: boolean;
 }
 
 const initialState: UserState = {
@@ -107,6 +143,9 @@ const initialState: UserState = {
   isAuthenticated: !!localStorage.getItem("token"),
   isLoading: false,
   error: null,
+
+  isAvatarUploading: false,
+  isUpdatingUser: false,
 };
 
 const userSlice = createSlice({
@@ -182,6 +221,21 @@ const userSlice = createSlice({
       .addCase(updateUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || "Not authorized";
+        state.isAuthenticated = false;
+      })
+      .addCase(UploadAvatarFile.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(
+        UploadAvatarFile.fulfilled,
+        (state, action: PayloadAction<IUser>) => {
+          state.isLoading = false;
+          state.user = action.payload;
+        },
+      )
+      .addCase(UploadAvatarFile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || "Avatar upload failed";
         state.isAuthenticated = false;
       });
   },
