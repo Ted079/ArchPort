@@ -1,13 +1,51 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
 import Button from "../../components/UI/Button";
-import { updateUser } from "../../store/user/authSlice";
+import { updateUser, UploadAvatarFile } from "../../store/user/authSlice";
 import Modal from "../../components/UI/Modal";
 import AvatarUpload from "./AvatarUpload";
 
 function Setting() {
-  const dispacth = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
+  const dispacth = useAppDispatch();
+
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  // const form = useForm<>({});
+
+  const handleFileChange = (file: File) => {
+    setFile(file);
+
+    const previewUrl = URL.createObjectURL(file);
+    setPreview(previewUrl);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (preview) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
+
+  const handleAvatarUpload = async () => {
+    if (!file) return;
+
+    const formData = new FormData();
+
+    formData.append("avatar", file);
+
+    try {
+      await dispacth(UploadAvatarFile(formData)).unwrap();
+
+      setFile(null);
+      setPreview(null);
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Avatar upload failed:", error);
+    }
+  };
 
   const [values, setValues] = useState({
     avatar: "",
@@ -188,11 +226,16 @@ function Setting() {
         title="Add your profile photo"
         onCancel={() => {
           setIsOpen(false);
+          setPreview(null);
         }}
-        //  confirmText="Choose File"
+        onConfirm={handleAvatarUpload}
+        confirmText="Add"
         cancelText="Cancel"
       >
-        <AvatarUpload />
+        <AvatarUpload
+          displayAvatar={preview || ""}
+          onFileChange={handleFileChange}
+        />
       </Modal>
     </>
   );

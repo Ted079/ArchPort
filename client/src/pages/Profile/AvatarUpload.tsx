@@ -1,11 +1,11 @@
 import { ImagesIcon } from "../../components/UI/icons/ImagesIcon";
 
-const AvatarUpload = ({
-  // displayAvatar = "https://img.magnific.com/free-photo/closeup-scarlet-macaw-from-side-view-scarlet-macaw-closeup-head_488145-3540.jpg?semt=ais_hybrid&w=740&q=80",
-  displayAvatar,
-}: {
-  displayAvatar?: string;
-}) => {
+interface AvatarUploadProps {
+  displayAvatar?: string | null;
+  onFileChange: (file: File) => void;
+}
+
+const AvatarUpload = ({ displayAvatar, onFileChange }: AvatarUploadProps) => {
   return (
     <label
       htmlFor="dropzone-file"
@@ -45,7 +45,12 @@ const AvatarUpload = ({
         id="dropzone-file"
         type="file"
         className="hidden"
-        // onChange={onFileChange}
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) {
+            onFileChange(file);
+          }
+        }}
       />
     </label>
   );

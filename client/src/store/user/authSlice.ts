@@ -103,7 +103,7 @@ export const UploadAvatarFile = createAsyncThunk<
   IUser,
   FormData,
   { rejectValue: string }
->("auth/uploadAvatar", async (FormData, thunkAPI) => {
+>("auth/uploadAvatar", async (formData, thunkAPI) => {
   try {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -111,17 +111,18 @@ export const UploadAvatarFile = createAsyncThunk<
     }
     const res = await axios.post<AvatarUploadResoponse>(
       `${BASE_URL}/auth/avatar`,
-      FormData,
+      formData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
         },
       },
     );
     return res.data.user;
   } catch (error: any) {
     console.log("SERVER ERROR DATA:", error.response?.data);
-    const message = error?.data?.message || "Server Error";
+    const message = error.response?.data?.message || "Server Error";
     return thunkAPI.rejectWithValue(message);
   }
 });
@@ -219,7 +220,7 @@ const userSlice = createSlice({
         state.isAuthenticated = true;
       })
       .addCase(updateUser.rejected, (state, action) => {
-        state.isLoading = false;
+        state.isAvatarUploading = true;
         state.error = action.payload || "Not authorized";
         state.isAuthenticated = false;
       })
@@ -229,14 +230,13 @@ const userSlice = createSlice({
       .addCase(
         UploadAvatarFile.fulfilled,
         (state, action: PayloadAction<IUser>) => {
-          state.isLoading = false;
+          state.isAvatarUploading = true;
           state.user = action.payload;
         },
       )
       .addCase(UploadAvatarFile.rejected, (state, action) => {
-        state.isLoading = false;
+        state.isAvatarUploading = true;
         state.error = action.payload || "Avatar upload failed";
-        state.isAuthenticated = false;
       });
   },
 });

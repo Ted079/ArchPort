@@ -12,7 +12,6 @@ import { upload } from "../middleware/multer";
 
 const router = Router();
 
-
 //auth
 router.post("/register", register);
 router.post("/login", login);
@@ -23,8 +22,6 @@ router.patch("/me", checkAuth, meUpdate);
 // router.delete("/me/", checkAuth, meUpdate);
 
 //avatar
-router.post("/avatar", checkAuth, upload.single("image"), uploadAvatar);
+router.post("/avatar", checkAuth, upload.single("avatar"), uploadAvatar);
 router.delete("/avatar", checkAuth, deleteAvatar);
 export default router;
-
-
